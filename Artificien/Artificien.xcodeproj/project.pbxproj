@@ -10,6 +10,9 @@
 		B175D33E25461AE10002D7BA /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B175D33D25461AE10002D7BA /* HealthKit.framework */; };
 		B175D34025461D120002D7BA /* HealthKitCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D33F25461D120002D7BA /* HealthKitCalls.swift */; };
 		B175D342254625FF0002D7BA /* HealthDataTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D341254625FF0002D7BA /* HealthDataTableViewController.swift */; };
+		B175D3462546386A0002D7BA /* HealthProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D345254638690002D7BA /* HealthProfile.swift */; };
+		B175D34925463EFE0002D7BA /* HKBiologicalSexExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D34825463EFE0002D7BA /* HKBiologicalSexExtensions.swift */; };
+		B175D34B25463F0E0002D7BA /* HKBloodTypeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D34A25463F0E0002D7BA /* HKBloodTypeExtensions.swift */; };
 		B19C6844253E08BD007D9CEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19C6843253E08BD007D9CEE /* AppDelegate.swift */; };
 		B19C6846253E08BD007D9CEE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19C6845253E08BD007D9CEE /* SceneDelegate.swift */; };
 		B19C684B253E08BD007D9CEE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19C6849253E08BD007D9CEE /* Main.storyboard */; };
@@ -22,6 +25,9 @@
 		B175D33D25461AE10002D7BA /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		B175D33F25461D120002D7BA /* HealthKitCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitCalls.swift; sourceTree = "<group>"; };
 		B175D341254625FF0002D7BA /* HealthDataTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataTableViewController.swift; sourceTree = "<group>"; };
+		B175D345254638690002D7BA /* HealthProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthProfile.swift; sourceTree = "<group>"; };
+		B175D34825463EFE0002D7BA /* HKBiologicalSexExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKBiologicalSexExtensions.swift; sourceTree = "<group>"; };
+		B175D34A25463F0E0002D7BA /* HKBloodTypeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKBloodTypeExtensions.swift; sourceTree = "<group>"; };
 		B19C6840253E08BD007D9CEE /* Artificien.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artificien.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B19C6843253E08BD007D9CEE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B19C6845253E08BD007D9CEE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +57,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B175D34725463EE60002D7BA /* HealthKit Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B175D34825463EFE0002D7BA /* HKBiologicalSexExtensions.swift */,
+				B175D34A25463F0E0002D7BA /* HKBloodTypeExtensions.swift */,
+			);
+			path = "HealthKit Extensions";
+			sourceTree = "<group>";
+		};
 		B19C6837253E08BD007D9CEE = {
 			isa = PBXGroup;
 			children = (
@@ -71,15 +86,17 @@
 		B19C6842253E08BD007D9CEE /* Artificien */ = {
 			isa = PBXGroup;
 			children = (
+				B175D34725463EE60002D7BA /* HealthKit Extensions */,
 				B175D33B25461AE00002D7BA /* Artificien.entitlements */,
 				B19C6843253E08BD007D9CEE /* AppDelegate.swift */,
 				B19C6845253E08BD007D9CEE /* SceneDelegate.swift */,
-				B19C6849253E08BD007D9CEE /* Main.storyboard */,
 				B19C684C253E08C3007D9CEE /* Assets.xcassets */,
+				B19C6849253E08BD007D9CEE /* Main.storyboard */,
 				B19C684E253E08C3007D9CEE /* LaunchScreen.storyboard */,
 				B19C6851253E08C3007D9CEE /* Info.plist */,
 				B175D33F25461D120002D7BA /* HealthKitCalls.swift */,
 				B175D341254625FF0002D7BA /* HealthDataTableViewController.swift */,
+				B175D345254638690002D7BA /* HealthProfile.swift */,
 			);
 			path = Artificien;
 			sourceTree = "<group>";
@@ -157,8 +174,11 @@
 			files = (
 				B175D34025461D120002D7BA /* HealthKitCalls.swift in Sources */,
 				B175D342254625FF0002D7BA /* HealthDataTableViewController.swift in Sources */,
+				B175D34925463EFE0002D7BA /* HKBiologicalSexExtensions.swift in Sources */,
 				B19C6844253E08BD007D9CEE /* AppDelegate.swift in Sources */,
+				B175D3462546386A0002D7BA /* HealthProfile.swift in Sources */,
 				B19C6846253E08BD007D9CEE /* SceneDelegate.swift in Sources */,
+				B175D34B25463F0E0002D7BA /* HKBloodTypeExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
