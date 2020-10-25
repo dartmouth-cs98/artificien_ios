@@ -10,10 +10,14 @@ import UIKit
 import HealthKit
 
 class HealthDataTableViewController: UITableViewController {
-
+    
+    @IBOutlet weak var authorizeHealthKitCell: UITableViewCell!
+    @IBOutlet weak var authorizedStatusLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        checkHealthKitStatus()
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -23,182 +27,57 @@ class HealthDataTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    private enum ProfileSection: Int {
-      case ageSexBloodType
-      case weightHeightBMI
-      case readHealthKitData
-      case saveBMI
-    }
+    //    override func numberOfSections(in tableView: UITableView) -> Int {
+    //        // #warning Incomplete implementation, return the number of sections
+    //        return 0
+    //    }
+    //
+    //    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    //        // #warning Incomplete implementation, return the number of rows
+    //        return 0
+    //    }
     
-    private enum ProfileDataError: Error {
+    // MARK: HealthKit Authorization
+    
+    // Check whether HealthKit has already been authorized and toggle relevant indicators
+    private func checkHealthKitStatus() {
+        let healthKitAuthorized = HKHealthStore.isHealthDataAvailable()
+        self.authorizedStatusLabel.text = healthKitAuthorized ? "Authorized" : "Unauthorized"
+        self.authorizedStatusLabel.textColor = healthKitAuthorized ? UIColor.systemGreen : UIColor.systemRed
+        // self.authorizeHealthKitCell.isHidden = healthKitAuthorized
+    }
+        
+    // Call helper function to present HealthKit Authorization flow
+    private func authorizeHealthKit() {
       
-      case missingBodyMassIndex
-      
-      var localizedDescription: String {
-        switch self {
-        case .missingBodyMassIndex:
-          return "Unable to calculate body mass index with available profile data."
+        HealthKitCalls.authorizeHealthKit { (authorized, error) in
+        
+            guard authorized else {
+                
+                // Displau error alert
+                DispatchQueue.main.sync {
+                    let alert = UIAlertController(title: "HealthKit Authorization Error", message: error?.localizedDescription ?? "Please give Artificien access to all HealthKit Data.", preferredStyle: .alert)
+
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true)
+                }
+                return
+            }
+            
+            DispatchQueue.main.sync {
+                self.checkHealthKitStatus()
+            }
         }
-      }
     }
     
-    @IBOutlet private var ageLabel:UILabel!
-    @IBOutlet private var bloodTypeLabel:UILabel!
-    @IBOutlet private var biologicalSexLabel:UILabel!
-    @IBOutlet private var weightLabel:UILabel!
-    @IBOutlet private var heightLabel:UILabel!
-    @IBOutlet private var bodyMassIndexLabel:UILabel!
-    
-    private let userHealthProfile = HealthProfile()
-    
-    private func updateHealthInfo() {
-      loadAndDisplayAgeSexAndBloodType()
-      loadAndDisplayMostRecentWeight()
-      loadAndDisplayMostRecentHeight()
-    }
-    
-    private func loadAndDisplayAgeSexAndBloodType() {
-      
-      do {
-        let userAgeSexAndBloodType = try HealthKitCalls.getAgeSexAndBloodType()
-        userHealthProfile.age = userAgeSexAndBloodType.age
-        userHealthProfile.biologicalSex = userAgeSexAndBloodType.biologicalSex
-        userHealthProfile.bloodType = userAgeSexAndBloodType.bloodType
-        updateLabels()
-      } catch let error {
-        self.displayAlert(for: error)
-      }
-    }
-    
-    private func updateLabels() {
-      
-      if let age = userHealthProfile.age {
-        ageLabel.text = "\(age)"
-      }
-
-      if let biologicalSex = userHealthProfile.biologicalSex {
-        biologicalSexLabel.text = biologicalSex //.stringRepresentation
-      }
-
-      if let bloodType = userHealthProfile.bloodType {
-        bloodTypeLabel.text = bloodType //.stringRepresentation
-      }
-      
-      if let weight = userHealthProfile.weightInKilograms {
-        let weightFormatter = MassFormatter()
-        weightFormatter.isForPersonMassUse = true
-        weightLabel.text = weightFormatter.string(fromKilograms: weight)
-      }
-      
-      if let height = userHealthProfile.heightInMeters {
-        let heightFormatter = LengthFormatter()
-        heightFormatter.isForPersonHeightUse = true
-        heightLabel.text = heightFormatter.string(fromMeters: height)
-      }
-     
-      if let bodyMassIndex = userHealthProfile.bodyMassIndex {
-        bodyMassIndexLabel.text = String(format: "%.02f", bodyMassIndex)
-      }
-    }
-    
-    private func loadAndDisplayMostRecentHeight() {
-      
-      //1. Use HealthKit to create the Height Sample Type
-      guard let heightSampleType = HKSampleType.quantityType(forIdentifier: .height) else {
-        print("Height Sample Type is no longer available in HealthKit")
-        return
-      }
-      
-      HealthKitCalls.getMostRecentSample(for: heightSampleType) { (sample, error) in
-        
-        guard let sample = sample else {
-        
-          if let error = error {
-            self.displayAlert(for: error)
-          }
-          
-          return
-        }
-        
-        //2. Convert the height sample to meters, save to the profile model,
-        //   and update the user interface.
-        let heightInMeters = sample.quantity.doubleValue(for: HKUnit.meter())
-        self.userHealthProfile.heightInMeters = heightInMeters
-        self.updateLabels()
-      }
-    }
-    
-    private func loadAndDisplayMostRecentWeight() {
-
-      guard let weightSampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
-        print("Body Mass Sample Type is no longer available in HealthKit")
-        return
-      }
-      
-      HealthKitCalls.getMostRecentSample(for: weightSampleType) { (sample, error) in
-        
-        guard let sample = sample else {
-          
-          if let error = error {
-            self.displayAlert(for: error)
-          }
-          return
-        }
-        
-        let weightInKilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
-        self.userHealthProfile.weightInKilograms = weightInKilograms
-        self.updateLabels()
-      }
-    }
-    
-    private func saveBodyMassIndexToHealthKit() {
-      
-      guard let bodyMassIndex = userHealthProfile.bodyMassIndex else {
-        displayAlert(for: ProfileDataError.missingBodyMassIndex)
-        return
-      }
-      
-      HealthKitCalls.saveBodyMassIndexSample(bodyMassIndex: bodyMassIndex,
-                                               date: Date())
-    }
-    
-    private func displayAlert(for error: Error) {
-      
-      let alert = UIAlertController(title: nil,
-                                    message: error.localizedDescription,
-                                    preferredStyle: .alert)
-      
-      alert.addAction(UIAlertAction(title: "O.K.",
-                                    style: .default,
-                                    handler: nil))
-      
-      present(alert, animated: true, completion: nil)
-    }
-    
-    //MARK:  UITableView Delegate
+    // MARK: - UITableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       
-      guard let section = ProfileSection(rawValue: indexPath.section) else {
-        fatalError("A ProfileSection should map to the index path's section")
-      }
-      
-      switch section {
-      case .saveBMI:
-        saveBodyMassIndexToHealthKit()
-      case .readHealthKitData:
-        updateHealthInfo()
-      default: break
-      }
-    }
+        tableView.deselectRow(at: indexPath, animated: true)   // Handle issue of cell remaining depressed
 
+        // Authorize HealthKit button
+        if indexPath.section == 0 && indexPath.row == 1 {
+            authorizeHealthKit()
+        }
+    }
 }
