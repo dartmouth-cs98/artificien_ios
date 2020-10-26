@@ -33,7 +33,7 @@
                         <sections>
                             <tableViewSection headerTitle="HealthKit" id="vn3-I3-EYP" userLabel="Authorize HealthKit">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="Jc8-Ka-ybb" detailTextLabel="vWZ-qF-j8l" style="IBUITableViewCellStyleValue1" id="yyr-we-JQD">
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="Jc8-Ka-ybb" detailTextLabel="vWZ-qF-j8l" style="IBUITableViewCellStyleValue1" id="yyr-we-JQD">
                                         <rect key="frame" x="0.0" y="55.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yyr-we-JQD" id="rCG-Sx-xMO">
@@ -68,7 +68,7 @@
                                                     <rect key="frame" x="20" y="0.0" width="374" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="textColor" red="0.36470588240000001" green="0.29411764709999999" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -76,9 +76,9 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="User Info" id="Lw6-oa-IyV" userLabel="Profile Info">
+                            <tableViewSection headerTitle="User Info" id="Lw6-oa-IyV">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="y46-ou-IwC" detailTextLabel="5ql-PR-HX7" style="IBUITableViewCellStyleValue1" id="o1x-9m-G8H">
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="y46-ou-IwC" detailTextLabel="5ql-PR-HX7" style="IBUITableViewCellStyleValue1" id="o1x-9m-G8H">
                                         <rect key="frame" x="0.0" y="191.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="o1x-9m-G8H" id="UZp-9E-NTc">
@@ -102,7 +102,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="dc3-eD-6gz" detailTextLabel="i4l-72-0OE" style="IBUITableViewCellStyleValue1" id="GoY-xc-zBf">
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="dc3-eD-6gz" detailTextLabel="i4l-72-0OE" style="IBUITableViewCellStyleValue1" id="GoY-xc-zBf">
                                         <rect key="frame" x="0.0" y="235.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GoY-xc-zBf" id="X23-Ag-diO">
@@ -126,7 +126,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="Ihj-nl-cgt" detailTextLabel="9iZ-ar-4dD" style="IBUITableViewCellStyleValue1" id="nsT-XB-QJE">
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="Ihj-nl-cgt" detailTextLabel="9iZ-ar-4dD" style="IBUITableViewCellStyleValue1" id="nsT-XB-QJE">
                                         <rect key="frame" x="0.0" y="279.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nsT-XB-QJE" id="Fvf-km-LOg">
@@ -152,9 +152,9 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Weight &amp; Height" id="11F-A1-VxF" userLabel="Profile Info">
+                            <tableViewSection headerTitle="Weight &amp; Height" id="11F-A1-VxF">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="IVS-Ty-kxb" detailTextLabel="F6t-1M-OUJ" style="IBUITableViewCellStyleValue1" id="cmL-3g-Ssd">
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="IVS-Ty-kxb" detailTextLabel="F6t-1M-OUJ" style="IBUITableViewCellStyleValue1" id="cmL-3g-Ssd">
                                         <rect key="frame" x="0.0" y="371.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cmL-3g-Ssd" id="wor-iw-Cus">
@@ -178,7 +178,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="s9x-0l-AIs" detailTextLabel="3ef-I1-beC" style="IBUITableViewCellStyleValue1" id="evE-VP-pTe">
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="s9x-0l-AIs" detailTextLabel="3ef-I1-beC" style="IBUITableViewCellStyleValue1" id="evE-VP-pTe">
                                         <rect key="frame" x="0.0" y="415.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="evE-VP-pTe" id="hEs-sF-b2n">
@@ -202,7 +202,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="ZRo-qu-3x4" detailTextLabel="YcS-VO-7pV" style="IBUITableViewCellStyleValue1" id="auz-pF-sQO">
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="ZRo-qu-3x4" detailTextLabel="YcS-VO-7pV" style="IBUITableViewCellStyleValue1" id="auz-pF-sQO">
                                         <rect key="frame" x="0.0" y="459.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="auz-pF-sQO" id="0IR-I1-rA9">
@@ -228,7 +228,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="" id="pyL-Wg-XkX" userLabel="Read Data">
+                            <tableViewSection headerTitle="" id="pyL-Wg-XkX" userLabel="Update Data">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="bwp-af-tL6" style="IBUITableViewCellStyleDefault" id="73w-QX-b4D">
                                         <rect key="frame" x="0.0" y="535.5" width="414" height="44"/>
@@ -240,12 +240,36 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Update HealthKit Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bwp-af-tL6">
                                                     <rect key="frame" x="20" y="0.0" width="374" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
+                                                    <color key="textColor" red="0.99215686274509807" green="1" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.23529411764705882" green="0.035294117647058823" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="A4o-YB-Okj">
+                                        <rect key="frame" x="0.0" y="579.5" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="A4o-YB-Okj" id="tbX-fb-cdv">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArtificienLogo" translatesAutoresizingMaskIntoConstraints="NO" id="afR-pF-Tmh">
+                                                    <rect key="frame" x="0.0" y="15" width="414" height="24"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="afR-pF-Tmh" firstAttribute="leading" secondItem="tbX-fb-cdv" secondAttribute="leading" id="5nl-vR-yyj"/>
+                                                <constraint firstAttribute="bottom" secondItem="afR-pF-Tmh" secondAttribute="bottom" constant="5" id="FzF-f3-lgs"/>
+                                                <constraint firstItem="afR-pF-Tmh" firstAttribute="top" secondItem="tbX-fb-cdv" secondAttribute="top" constant="15" id="ePV-ic-KCt"/>
+                                                <constraint firstAttribute="trailing" secondItem="afR-pF-Tmh" secondAttribute="trailing" id="wa4-Za-IBj"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -264,6 +288,7 @@
                         <outlet property="bloodTypeLabel" destination="9iZ-ar-4dD" id="cBF-Vw-OCu"/>
                         <outlet property="bodyMassIndexLabel" destination="YcS-VO-7pV" id="ysk-y5-Y8H"/>
                         <outlet property="heightLabel" destination="3ef-I1-beC" id="fDU-9Q-fPr"/>
+                        <outlet property="updateHealthKitDataCell" destination="73w-QX-b4D" id="WKo-xV-KQo"/>
                         <outlet property="weightLabel" destination="F6t-1M-OUJ" id="xtk-oI-Xas"/>
                     </connections>
                 </tableViewController>
@@ -272,4 +297,7 @@
             <point key="canvasLocation" x="722" y="807"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ArtificienLogo" width="620" height="183"/>
+    </resources>
 </document>
