@@ -14,6 +14,7 @@ class HealthDataTableViewController: UITableViewController {
     // MARK: Outlets & Setup
     
     @IBOutlet weak var authorizeHealthKitCell: UITableViewCell!
+    @IBOutlet weak var updateHealthKitDataCell: UITableViewCell!
     @IBOutlet weak var authorizedStatusLabel: UILabel!
     @IBOutlet weak var ageLabel: UILabel!
     @IBOutlet weak var biologicalSexLabel: UILabel!
@@ -25,6 +26,8 @@ class HealthDataTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         checkHealthKitStatus()
+        updateHealthKitDataCell.addGradientBackground(firstColor: UIColor(red: 0.24, green: 0.04, blue: 0.42, alpha: 1.00),
+                                                      secondColor:  UIColor(red: 0.69, green: 0.44, blue: 0.92, alpha: 1.00))
     }
     
     // MARK: UI Helpers
@@ -127,22 +130,20 @@ class HealthDataTableViewController: UITableViewController {
     
     private func loadAndDisplayMostRecentHeight() {
         
-        //1. Use HealthKit to create the Height Sample Type
+        // Use HealthKit to create the Height Sample Type
         guard let heightSampleType = HKSampleType.quantityType(forIdentifier: .height) else {
-            print("Height Sample Type is no longer available in HealthKit")
+            self.displayAlert(for: nil, title: "Height Sample Error", message: "Height Sample Type is no longer available in HealthKit")
             return
         }
         
         HealthKitCalls.getMostRecentSample(for: heightSampleType) { (sample, error) in
             
             guard let sample = sample else {
-
                 self.displayAlert(for: error, title: "Error Loading Height", message: nil)
                 return
             }
             
-            //2. Convert the height sample to meters, save to the profile model,
-            //   and update the user interface.
+            // Convert the height sample to meters, save to the profile model, and update the user interface.
             let heightInMeters = sample.quantity.doubleValue(for: HKUnit.meter())
             self.userHealthProfile.heightInMeters = heightInMeters
             self.updateLabels()
@@ -152,14 +153,13 @@ class HealthDataTableViewController: UITableViewController {
     private func loadAndDisplayMostRecentWeight() {
         
         guard let weightSampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
-            print("Body Mass Sample Type is no longer available in HealthKit")
+            self.displayAlert(for: nil, title: "Body Mass Sample Error", message: "Body Mass Sample Type is no longer available in HealthKit")
             return
         }
         
         HealthKitCalls.getMostRecentSample(for: weightSampleType) { (sample, error) in
             
             guard let sample = sample else {
-
                 self.displayAlert(for: error, title: "Error Loading Weight", message: nil)
                 return
             }

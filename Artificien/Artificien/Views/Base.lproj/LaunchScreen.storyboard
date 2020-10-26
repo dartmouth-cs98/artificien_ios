@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArtificienIcon" translatesAutoresizingMaskIntoConstraints="NO" id="t8r-uQ-PXc">
+                                <rect key="frame" x="107" y="246" width="200" height="204"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="t8r-uQ-PXc" secondAttribute="height" multiplier="263:268" id="2aC-UY-4Wu"/>
+                                    <constraint firstAttribute="width" constant="200" id="Cfr-64-d5K"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artificien Mobile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EM0-qf-5jT">
+                                <rect key="frame" x="96.5" y="480" width="221.5" height="41"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArtificienLogo" translatesAutoresizingMaskIntoConstraints="NO" id="V11-FK-rau">
+                                <rect key="frame" x="132" y="802" width="150" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="V11-FK-rau" secondAttribute="height" multiplier="20:8" id="HTr-s8-Rb4"/>
+                                    <constraint firstAttribute="width" constant="150" id="UJl-eG-6HX"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="t8r-uQ-PXc" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4LZ-Cw-7SK"/>
+                            <constraint firstItem="V11-FK-rau" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="CjQ-Wb-5pD"/>
+                            <constraint firstItem="t8r-uQ-PXc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-100" id="GA8-Rb-g8v"/>
+                            <constraint firstItem="EM0-qf-5jT" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="IP8-R8-PAh"/>
+                            <constraint firstItem="V11-FK-rau" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="KaA-wu-P8a"/>
+                            <constraint firstItem="EM0-qf-5jT" firstAttribute="top" secondItem="t8r-uQ-PXc" secondAttribute="bottom" constant="30" id="xWq-ag-gfo"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52.173913043478265" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ArtificienIcon" width="263" height="268"/>
+        <image name="ArtificienLogo" width="620" height="183"/>
+    </resources>
+</document>
