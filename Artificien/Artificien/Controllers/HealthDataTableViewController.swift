@@ -23,11 +23,15 @@ class HealthDataTableViewController: UITableViewController {
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var bodyMassIndexLabel: UILabel!
     
+    private let userHealthProfile = HealthProfile()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         checkHealthKitStatus()
+        updateLabels()
         updateHealthKitDataCell.addGradientBackground(firstColor: UIColor(red: 0.24, green: 0.04, blue: 0.42, alpha: 1.00),
                                                       secondColor:  UIColor(red: 0.69, green: 0.44, blue: 0.92, alpha: 1.00))
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont(name: "Avenir", size: 30)!]
     }
     
     // MARK: UI Helpers
@@ -113,8 +117,6 @@ class HealthDataTableViewController: UITableViewController {
     
     // MARK: HealthKit Data Loading
     
-    private let userHealthProfile = HealthProfile()
-    
     private func loadAndDisplayAgeSexAndBloodType() {
         
         do {
@@ -172,6 +174,11 @@ class HealthDataTableViewController: UITableViewController {
     
     // MARK: UITableView Delegate
     
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = UIFont(name: "Avenir", size: 14)
+    }
+        
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       
         tableView.deselectRow(at: indexPath, animated: true)   // Handle issue of cell remaining depressed
