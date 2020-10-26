@@ -230,14 +230,14 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="" id="pyL-Wg-XkX" userLabel="Read Data">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="bwp-af-tL6" style="IBUITableViewCellStyleDefault" id="73w-QX-b4D">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="bwp-af-tL6" style="IBUITableViewCellStyleDefault" id="73w-QX-b4D">
                                         <rect key="frame" x="0.0" y="535.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="73w-QX-b4D" id="qtn-hZ-6nP">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Read HealthKit Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bwp-af-tL6">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Update HealthKit Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bwp-af-tL6">
                                                     <rect key="frame" x="20" y="0.0" width="374" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -257,8 +257,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="User Health Data" largeTitleDisplayMode="always" id="Dhp-J9-vP2"/>
                     <connections>
+                        <outlet property="ageLabel" destination="5ql-PR-HX7" id="PTi-Dq-FYS"/>
                         <outlet property="authorizeHealthKitCell" destination="K9h-2b-Orp" id="vVj-z2-yHp"/>
                         <outlet property="authorizedStatusLabel" destination="vWZ-qF-j8l" id="5xJ-6u-ubf"/>
+                        <outlet property="biologicalSexLabel" destination="i4l-72-0OE" id="fmz-OH-pvk"/>
+                        <outlet property="bloodTypeLabel" destination="9iZ-ar-4dD" id="cBF-Vw-OCu"/>
+                        <outlet property="bodyMassIndexLabel" destination="YcS-VO-7pV" id="ysk-y5-Y8H"/>
+                        <outlet property="heightLabel" destination="3ef-I1-beC" id="fDU-9Q-fPr"/>
+                        <outlet property="weightLabel" destination="F6t-1M-OUJ" id="xtk-oI-Xas"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gKn-PF-xLk" userLabel="First Responder" sceneMemberID="firstResponder"/>
