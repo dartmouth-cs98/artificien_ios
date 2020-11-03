@@ -2,6 +2,8 @@
 
 This is the main proof-of-concept mobile companion to the Artificien platform. This repo stores a demo application that stores user health data from Apple Health and exposes it to the Artificien platform for learning/analysis.
 
+<img src="./latestScreenshot.png" width="300">
+
 TODO: super short project description, some sample screenshots or mockups that you keep up-to-date.
 
 ## Architecture
