@@ -228,10 +228,38 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Activity" id="2NA-mK-pqM">
+                                <cells>
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="Xzk-bC-HbU" detailTextLabel="8qw-cg-6Co" style="IBUITableViewCellStyleValue1" id="Yu9-cY-dUE">
+                                        <rect key="frame" x="0.0" y="551.5" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yu9-cY-dUE" id="R2i-Jv-nwJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Step Count" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xzk-bC-HbU">
+                                                    <rect key="frame" x="20" y="11" width="81.5" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text=" Unknown" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8qw-cg-6Co">
+                                                    <rect key="frame" x="323" y="11" width="71" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
+                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="" id="pyL-Wg-XkX" userLabel="Update Data">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="bwp-af-tL6" style="IBUITableViewCellStyleDefault" id="73w-QX-b4D">
-                                        <rect key="frame" x="0.0" y="535.5" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="627.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="73w-QX-b4D" id="qtn-hZ-6nP">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
@@ -249,7 +277,7 @@
                                         <color key="backgroundColor" red="0.23529411764705882" green="0.035294117647058823" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="A4o-YB-Okj">
-                                        <rect key="frame" x="0.0" y="579.5" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="671.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="A4o-YB-Okj" id="tbX-fb-cdv">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
@@ -288,6 +316,7 @@
                         <outlet property="bloodTypeLabel" destination="9iZ-ar-4dD" id="cBF-Vw-OCu"/>
                         <outlet property="bodyMassIndexLabel" destination="YcS-VO-7pV" id="ysk-y5-Y8H"/>
                         <outlet property="heightLabel" destination="3ef-I1-beC" id="fDU-9Q-fPr"/>
+                        <outlet property="stepCountLabel" destination="8qw-cg-6Co" id="mz9-7l-068"/>
                         <outlet property="updateHealthKitDataCell" destination="73w-QX-b4D" id="WKo-xV-KQo"/>
                         <outlet property="weightLabel" destination="F6t-1M-OUJ" id="xtk-oI-Xas"/>
                     </connections>

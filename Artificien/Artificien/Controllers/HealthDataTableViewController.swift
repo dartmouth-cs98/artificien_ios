@@ -22,6 +22,7 @@ class HealthDataTableViewController: UITableViewController {
     @IBOutlet weak var weightLabel: UILabel!
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var bodyMassIndexLabel: UILabel!
+    @IBOutlet weak var stepCountLabel: UILabel!
     
     private let userHealthProfile = HealthProfile()
     
@@ -60,6 +61,7 @@ class HealthDataTableViewController: UITableViewController {
         loadAndDisplayAgeSexAndBloodType()
         loadAndDisplayMostRecentWeight()
         loadAndDisplayMostRecentHeight()
+        loadAndDisplayMostRecentSteps()
     }
     
     private func updateLabels() {
@@ -90,6 +92,11 @@ class HealthDataTableViewController: UITableViewController {
         
         if let bodyMassIndex = userHealthProfile.bodyMassIndex {
             bodyMassIndexLabel.text = String(format: "%.02f", bodyMassIndex)
+        }
+        
+        if let stepCount = userHealthProfile.stepCount {
+            stepCountLabel.text = "\(stepCount)"
+//            bodyMassIndexLabel.text = String(format: "%.02f", bodyMassIndex)
         }
     }
     
@@ -138,9 +145,10 @@ class HealthDataTableViewController: UITableViewController {
             return
         }
         
-        HealthKitCalls.getMostRecentSample(for: heightSampleType) { (sample, error) in
-            
-            guard let sample = sample else {
+        HealthKitCalls.getSamples(for: heightSampleType,
+                                  startDate: Date.distantPast) { (sample, error) in
+
+            guard let sample = sample?.first as? HKQuantitySample else {
                 self.displayAlert(for: error, title: "Error Loading Height", message: nil)
                 return
             }
@@ -159,15 +167,46 @@ class HealthDataTableViewController: UITableViewController {
             return
         }
         
-        HealthKitCalls.getMostRecentSample(for: weightSampleType) { (sample, error) in
+        HealthKitCalls.getSamples(for: weightSampleType,
+                                  startDate: Date.distantPast) { (sample, error) in
             
-            guard let sample = sample else {
+            guard let sample = sample?.first as? HKQuantitySample else {
                 self.displayAlert(for: error, title: "Error Loading Weight", message: nil)
                 return
             }
             
             let weightInKilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
             self.userHealthProfile.weightInKilograms = weightInKilograms
+            self.updateLabels()
+        }
+    }
+    
+    private func loadAndDisplayMostRecentSteps() {
+        
+        guard let stepCountSampleType = HKSampleType.quantityType(forIdentifier: .stepCount) else {
+            self.displayAlert(for: nil, title: "Step Count Sample Error", message: "Step Count Sample Type is no longer available in HealthKit")
+            return
+        }
+        
+        HealthKitCalls.getSamples(for: stepCountSampleType,
+                                  startDate: Calendar.current.startOfDay(for: Date()),
+                                  mostRecentOnly: false) { (samples, error) in
+            
+            guard let samples = samples else {
+                self.displayAlert(for: error, title: "Error Loading Step Count", message: nil)
+                return
+            }
+            
+            var stepCount = 0.0
+            for sample in samples {
+                
+                guard let quantitySample = sample as? HKQuantitySample else {
+                    self.displayAlert(for: error, title: "Error Loading Step Count", message: nil)
+                    return
+                }
+                stepCount += quantitySample.quantity.doubleValue(for: HKUnit.count())
+            }
+            self.userHealthProfile.stepCount = stepCount
             self.updateLabels()
         }
     }
@@ -187,7 +226,9 @@ class HealthDataTableViewController: UITableViewController {
         if indexPath.section == 0 && indexPath.row == 1 {
             authorizeHealthKit()
         }
-        if indexPath.section == 3 {
+        
+        // Refresh HealthKit button
+        if indexPath.section == 4 {
             updateHealthInfo()
         }
     }

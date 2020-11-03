@@ -25,4 +25,5 @@ class HealthProfile {
         }
         return (weightInKilograms/(heightInMeters*heightInMeters))
     }
+    var stepCount: Double?
 }
