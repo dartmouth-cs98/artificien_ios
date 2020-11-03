@@ -32,7 +32,8 @@ class HealthKitCalls {
             let bodyMassIndex = HKObjectType.quantityType(forIdentifier: .bodyMassIndex),
             let height = HKObjectType.quantityType(forIdentifier: .height),
             let bodyMass = HKObjectType.quantityType(forIdentifier: .bodyMass),
-            let activeEnergy = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)
+            let activeEnergy = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned),
+            let stepCount = HKObjectType.quantityType(forIdentifier: .stepCount)
             else {
                 completion(false, HealthKitSetupError.dataTypeNotAvailable)
                 return
@@ -49,6 +50,7 @@ class HealthKitCalls {
                                                        bodyMassIndex,
                                                        height,
                                                        bodyMass,
+                                                       stepCount,
                                                        HKObjectType.workoutType()]
         
         // Request Authorization
@@ -86,35 +88,33 @@ class HealthKitCalls {
         }
     }
     
-    class func getMostRecentSample(for sampleType: HKSampleType,
-                                   completion: @escaping (HKQuantitySample?, Error?) -> Swift.Void) {
+    class func getSamples(for sampleType: HKSampleType,
+                          startDate: Date,
+                          mostRecentOnly: Bool = true,
+                          completion: @escaping ([HKSample]?, Error?) -> Swift.Void) {
         
         // Use HKQuery to load the most recent samples.
-        let mostRecentPredicate = HKQuery.predicateForSamples(withStart: Date.distantPast,
+        let mostRecentPredicate = HKQuery.predicateForSamples(withStart: startDate,
                                                               end: Date(),
                                                               options: .strictEndDate)
         
         let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate,
                                               ascending: false)
-        
-        let limit = 1
-        
+                
         let sampleQuery = HKSampleQuery(sampleType: sampleType,
                                         predicate: mostRecentPredicate,
-                                        limit: limit,
+                                        limit: mostRecentOnly ? 1 : 0,
                                         sortDescriptors: [sortDescriptor]) { (query, samples, error) in
                                             
             // Always dispatch to the main thread when complete.
             DispatchQueue.main.async {
                 
-                guard let samples = samples,
-                    let mostRecentSample = samples.first as? HKQuantitySample else {
-                        
-                        completion(nil, error)
-                        return
+                guard let samples = samples else {
+                    completion(nil, error)
+                    return
                 }
                 
-                completion(mostRecentSample, nil)
+                completion(samples, nil)
             }
         }
         
