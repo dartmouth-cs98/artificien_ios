@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B175D33E25461AE10002D7BA /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B175D33D25461AE10002D7BA /* HealthKit.framework */; };
 		B175D34025461D120002D7BA /* HealthKitCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D33F25461D120002D7BA /* HealthKitCalls.swift */; };
 		B175D342254625FF0002D7BA /* HealthDataTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D341254625FF0002D7BA /* HealthDataTableViewController.swift */; };
 		B175D3462546386A0002D7BA /* HealthProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D345254638690002D7BA /* HealthProfile.swift */; };
@@ -19,6 +18,7 @@
 		B19C684B253E08BD007D9CEE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19C6849253E08BD007D9CEE /* Main.storyboard */; };
 		B19C684D253E08C3007D9CEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B19C684C253E08C3007D9CEE /* Assets.xcassets */; };
 		B19C6850253E08C3007D9CEE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19C684E253E08C3007D9CEE /* LaunchScreen.storyboard */; };
+		B1E73AC9255A1C39005DD2AD /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B175D33D25461AE10002D7BA /* HealthKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B175D33E25461AE10002D7BA /* HealthKit.framework in Frameworks */,
+				B1E73AC9255A1C39005DD2AD /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,15 +351,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Artificien/Artificien.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HW2D2HF4LQ;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = JQ28K6Y7JE;
 				INFOPLIST_FILE = Artificien/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shreyasagnihotri.Artificien;
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.dartmouth.Artificien-Mobile";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore edu.dartmouth.Artificien-Mobile";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -370,15 +372,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Artificien/Artificien.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HW2D2HF4LQ;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = JQ28K6Y7JE;
 				INFOPLIST_FILE = Artificien/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shreyasagnihotri.Artificien;
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.dartmouth.Artificien-Mobile";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore edu.dartmouth.Artificien-Mobile";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
