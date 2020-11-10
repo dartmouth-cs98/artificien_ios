@@ -26,6 +26,8 @@ class HealthDataTableViewController: UITableViewController {
     
     private let userHealthProfile = HealthProfile()
     
+    var spinner = UIActivityIndicatorView(style: .large)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         checkHealthKitStatus()
@@ -33,16 +35,27 @@ class HealthDataTableViewController: UITableViewController {
         updateHealthKitDataCell.addGradientBackground(firstColor: UIColor(red: 0.24, green: 0.04, blue: 0.42, alpha: 1.00),
                                                       secondColor:  UIColor(red: 0.69, green: 0.44, blue: 0.92, alpha: 1.00))
         self.navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont(name: "Avenir", size: 30)!]
+        
+        spinner.hidesWhenStopped = true
+        spinner.center = self.view.center
+        spinner.backgroundColor = .gray
+        self.view.addSubview(spinner)
+        self.view.bringSubviewToFront(spinner)
     }
     
     // MARK: UI Helpers
     
     // Check whether HealthKit has already been authorized and toggle relevant indicators
     private func checkHealthKitStatus() {
+        
+        spinner.startAnimating()
+        
         let healthKitAuthorized = HKHealthStore.isHealthDataAvailable()
         self.authorizedStatusLabel.text = healthKitAuthorized ? "Authorized" : "Unauthorized"
         self.authorizedStatusLabel.textColor = healthKitAuthorized ? UIColor.systemGreen : UIColor.systemRed
         // self.authorizeHealthKitCell.isHidden = healthKitAuthorized
+        
+        spinner.stopAnimating()
     }
     
     // Display alert as popup with OK message given error or hard-coded message
@@ -58,45 +71,48 @@ class HealthDataTableViewController: UITableViewController {
     }
     
     private func updateHealthInfo() {
+        spinner.startAnimating()
         loadAndDisplayAgeSexAndBloodType()
-        loadAndDisplayMostRecentWeight()
         loadAndDisplayMostRecentHeight()
+        loadAndDisplayMostRecentWeight()
         loadAndDisplayMostRecentSteps()
+        UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: "bodyMassIndex")
+        updateLabels()
+        spinner.stopAnimating()
     }
     
     private func updateLabels() {
         
-        if let age = userHealthProfile.age {
+        if let age = UserDefaults.standard.object(forKey: "age") {
             ageLabel.text = "\(age)"
         }
         
-        if let biologicalSex = userHealthProfile.biologicalSex {
-            biologicalSexLabel.text = biologicalSex.toString
+        if let biologicalSex = UserDefaults.standard.object(forKey: "biologicalSex") {
+            biologicalSexLabel.text = biologicalSex as? String
         }
         
-        if let bloodType = userHealthProfile.bloodType {
-            bloodTypeLabel.text = bloodType.toString
+        if let bloodType = UserDefaults.standard.object(forKey: "bloodType") {
+            bloodTypeLabel.text = bloodType as? String
         }
         
-        if let weight = userHealthProfile.weightInKilograms {
+        if let weight = UserDefaults.standard.object(forKey: "weightInKilograms") {
             let weightFormatter = MassFormatter()
             weightFormatter.isForPersonMassUse = true
-            weightLabel.text = weightFormatter.string(fromKilograms: weight)
+            weightLabel.text = weightFormatter.string(fromKilograms: weight as! Double)
         }
         
-        if let height = userHealthProfile.heightInMeters {
+        if let height = UserDefaults.standard.object(forKey: "heightInMeters") {
             let heightFormatter = LengthFormatter()
             heightFormatter.isForPersonHeightUse = true
-            heightLabel.text = heightFormatter.string(fromMeters: height)
+            heightLabel.text = heightFormatter.string(fromMeters: height as! Double)
         }
         
-        if let bodyMassIndex = userHealthProfile.bodyMassIndex {
-            bodyMassIndexLabel.text = String(format: "%.02f", bodyMassIndex)
+        if let bodyMassIndex = UserDefaults.standard.object(forKey: "bodyMassIndex") {
+            bodyMassIndexLabel.text = String(format: "%.02f", bodyMassIndex as! Double)
         }
         
-        if let stepCount = userHealthProfile.stepCount {
+        if let stepCount = UserDefaults.standard.object(forKey: "stepCount") {
             stepCountLabel.text = "\(stepCount)"
-//            bodyMassIndexLabel.text = String(format: "%.02f", bodyMassIndex)
         }
     }
     
@@ -131,7 +147,13 @@ class HealthDataTableViewController: UITableViewController {
             userHealthProfile.age = userAgeSexAndBloodType.age
             userHealthProfile.biologicalSex = userAgeSexAndBloodType.biologicalSex
             userHealthProfile.bloodType = userAgeSexAndBloodType.bloodType
+            
+            UserDefaults.standard.set(userHealthProfile.age, forKey: "age")
+            UserDefaults.standard.set(userHealthProfile.biologicalSex?.toString, forKey: "biologicalSex")
+            UserDefaults.standard.set(userHealthProfile.bloodType?.toString, forKey: "bloodType")
+            
             updateLabels()
+            
         } catch let error {
             self.displayAlert(for: error, title: "Error Loading Sex And Blood Type", message: nil)
         }
@@ -145,8 +167,8 @@ class HealthDataTableViewController: UITableViewController {
             return
         }
         
-        HealthKitCalls.getSamples(for: heightSampleType,
-                                  startDate: Date.distantPast) { (sample, error) in
+        HealthKitCalls.getSamples(for: heightSampleType, startDate: Date.distantPast) {
+            (sample, error) in
 
             guard let sample = sample?.first as? HKQuantitySample else {
                 self.displayAlert(for: error, title: "Error Loading Height", message: nil)
@@ -156,6 +178,10 @@ class HealthDataTableViewController: UITableViewController {
             // Convert the height sample to meters, save to the profile model, and update the user interface.
             let heightInMeters = sample.quantity.doubleValue(for: HKUnit.meter())
             self.userHealthProfile.heightInMeters = heightInMeters
+            
+            UserDefaults.standard.set(self.userHealthProfile.heightInMeters, forKey: "heightInMeters")
+            UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: "bodyMassIndex")
+            
             self.updateLabels()
         }
     }
@@ -167,8 +193,8 @@ class HealthDataTableViewController: UITableViewController {
             return
         }
         
-        HealthKitCalls.getSamples(for: weightSampleType,
-                                  startDate: Date.distantPast) { (sample, error) in
+        HealthKitCalls.getSamples(for: weightSampleType, startDate: Date.distantPast) {
+            (sample, error) in
             
             guard let sample = sample?.first as? HKQuantitySample else {
                 self.displayAlert(for: error, title: "Error Loading Weight", message: nil)
@@ -177,6 +203,10 @@ class HealthDataTableViewController: UITableViewController {
             
             let weightInKilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
             self.userHealthProfile.weightInKilograms = weightInKilograms
+            
+            UserDefaults.standard.set(self.userHealthProfile.weightInKilograms, forKey: "weightInKilograms")
+            UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: "bodyMassIndex")
+
             self.updateLabels()
         }
     }
@@ -188,9 +218,8 @@ class HealthDataTableViewController: UITableViewController {
             return
         }
         
-        HealthKitCalls.getSamples(for: stepCountSampleType,
-                                  startDate: Calendar.current.startOfDay(for: Date()),
-                                  mostRecentOnly: false) { (samples, error) in
+        HealthKitCalls.getSamples(for: stepCountSampleType, startDate: Calendar.current.startOfDay(for: Date()), mostRecentOnly: false) {
+            (samples, error) in
             
             guard let samples = samples else {
                 self.displayAlert(for: error, title: "Error Loading Step Count", message: nil)
@@ -207,6 +236,9 @@ class HealthDataTableViewController: UITableViewController {
                 stepCount += quantitySample.quantity.doubleValue(for: HKUnit.count())
             }
             self.userHealthProfile.stepCount = stepCount
+            
+            UserDefaults.standard.set(self.userHealthProfile.stepCount, forKey: "stepCount")
+
             self.updateLabels()
         }
     }
