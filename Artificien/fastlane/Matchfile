@@ -1,0 +1,3 @@
+git_url "http://github.com/dali-lab/ios-code-signing.git"
+type "development"
+app_identifier "edu.dartmouth.Artificien-Mobile"
