@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.syftClient = syftClient
 
         // Create a new federated learning job with the model name and version
-        self.syftJob = syftClient.newJob(modelName: "perceptron", version: "2.0")
+        self.syftJob = syftClient.newJob(modelName: "perceptron", version: "1.0")
 
         // This function is called when SwiftSyft has downloaded the plans and model parameters from PyGrid
         // You are ready to train your model on your data
@@ -88,7 +88,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let healthValidationData = try ValidationData(data: healthData, shape: [1, healthData.count])
                 
                 // Execute the plan with the training data and validation data. `plan.execute()` returns the loss and you can use it if you want to (plan.execute() has the @discardableResult attribute)
-                plan.execute(trainingData: healthTrainingData, validationData: healthValidationData, clientConfig: clientConfig)
+                let loss = plan.execute(trainingData: healthTrainingData, validationData: healthValidationData, clientConfig: clientConfig)
+                UserDefaults.standard.set(loss, forKey: "modelLoss")
                 
                 // Generate diff data and report the final diffs as
                 let diffStateData = try plan.generateDiffData()

@@ -23,6 +23,7 @@ class HealthDataTableViewController: UITableViewController {
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var bodyMassIndexLabel: UILabel!
     @IBOutlet weak var stepCountLabel: UILabel!
+    @IBOutlet weak var modelLossLabel: UILabel!
     
     private let userHealthProfile = HealthProfile()
     
@@ -82,6 +83,10 @@ class HealthDataTableViewController: UITableViewController {
     }
     
     private func updateLabels() {
+        
+        if let loss = UserDefaults.standard.object(forKey: "modelLoss") {
+            modelLossLabel.text = "\(loss)"
+        }
         
         if let age = UserDefaults.standard.object(forKey: "age") {
             ageLabel.text = "\(age)"
@@ -255,12 +260,12 @@ class HealthDataTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)   // Handle issue of cell remaining depressed
 
         // Authorize HealthKit button
-        if indexPath.section == 0 && indexPath.row == 1 {
+        if indexPath.section == 4 && indexPath.row == 1 {
             authorizeHealthKit()
         }
         
         // Refresh HealthKit button
-        if indexPath.section == 4 {
+        if indexPath.section == 5 {
             updateHealthInfo()
         }
     }
