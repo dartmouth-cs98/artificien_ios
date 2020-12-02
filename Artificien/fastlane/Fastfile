@@ -32,8 +32,8 @@ platform :ios do
     match(type: "appstore")
     gym(
       export_method: "app-store",
-      project: "Artificien.xcodeproj",
-      # workspace: "YourAppName.xcworkspace", # do either the project or workspace line - workspace if you are using pods, project if not
+      # project: "Artificien.xcodeproj",
+      workspace: "Artificien.xcworkspace", # do either the project or workspace line - workspace if you are using pods, project if not
       scheme: "Artificien",
     )
     upload_to_testflight

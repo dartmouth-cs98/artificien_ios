@@ -18,4 +18,13 @@ extension HKBiologicalSex {
             case .other: return "Other"
         }
     }
+    
+    var toInt: Int {
+        switch self {
+            case .notSet: return 0
+            case .female: return 0
+            case .male: return 1
+            case .other: return 0
+        }
+    }
 }
