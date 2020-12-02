@@ -21,13 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "edu.dartmouth.Artificien-Mobile", using: DispatchQueue.global()) { task in
-
-            self.executeSyftJob(backgroundTask: task)
-
-        }
-
-        self.scheduleTrainingJob()
+//        BGTaskScheduler.shared.register(forTaskWithIdentifier: "edu.dartmouth.Artificien-Mobile", using: DispatchQueue.global()) { task in
+//
+//            self.executeSyftJob(backgroundTask: task)
+//
+//        }
+//
+//        self.scheduleTrainingJob()
 
         return true
     }
@@ -54,6 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Create a client with a PyGrid server URL
         guard let syftClient = SyftClient(url: URL(string: pyGridNodeAddress)!, authToken: authToken) else {
+            
+            UserDefaults.standard.set("Node connection failed", forKey: "trainingResult")
 
             // Set background task failed if creating a client fails
             backgroundTask.setTaskCompleted(success: false)
@@ -64,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.syftClient = syftClient
 
         // Create a new federated learning job with the model name and version
-        self.syftJob = syftClient.newJob(modelName: "perceptron", version: "1.0")
+        self.syftJob = syftClient.newJob(modelName: "perceptron", version: "3.0")
 
         // This function is called when SwiftSyft has downloaded the plans and model parameters from PyGrid
         // You are ready to train your model on your data
@@ -89,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 // Execute the plan with the training data and validation data. `plan.execute()` returns the loss and you can use it if you want to (plan.execute() has the @discardableResult attribute)
                 let loss = plan.execute(trainingData: healthTrainingData, validationData: healthValidationData, clientConfig: clientConfig)
-                UserDefaults.standard.set(loss, forKey: "modelLoss")
+                UserDefaults.standard.set("\(loss)", forKey: "trainingResult")
                 
                 // Generate diff data and report the final diffs as
                 let diffStateData = try plan.generateDiffData()
@@ -102,6 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
                 // Handle any error from the training cycle
                 debugPrint(error.localizedDescription)
+                UserDefaults.standard.set(error.localizedDescription, forKey: "trainingResult")
 
                 // Set the background task as failed after an error
                 backgroundTask.setTaskCompleted(success: false)
@@ -112,6 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // This is the error handler for any job exeuction errors like connecting to PyGrid
         self.syftJob?.onError(execute: { error in
             print(error.localizedDescription)
+            UserDefaults.standard.set(error.localizedDescription, forKey: "trainingResult")
             backgroundTask.setTaskCompleted(success: false)
         })
 
@@ -126,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Start the job. You can set that the job should only execute if the device is being charge and there is a WiFi connection.
         // These options are true by default if you don't specify them.
-        self.syftJob?.start(chargeDetection: true, wifiDetection: true)
+        self.syftJob?.start(chargeDetection: false, wifiDetection: false)
 
         // If the background task has expired,
         // we set this flag as true so that the training cycle
