@@ -9,13 +9,14 @@
 import UIKit
 import HealthKit
 import SwiftSyft
+import NVActivityIndicatorView
 
 class HealthDataTableViewController: UITableViewController {
     
-    // MARK: Outlets & Setup
+    // MARK: Setup
     
-    @IBOutlet weak var authorizeHealthKitCell: UITableViewCell!
-    @IBOutlet weak var updateHealthKitDataCell: UITableViewCell!
+    // Outlets
+    @IBOutlet weak var authorizeHealthKitLabel: UILabel!
     @IBOutlet weak var authorizedStatusLabel: UILabel!
     @IBOutlet weak var ageLabel: UILabel!
     @IBOutlet weak var biologicalSexLabel: UILabel!
@@ -26,33 +27,68 @@ class HealthDataTableViewController: UITableViewController {
     @IBOutlet weak var stepCountLabel: UILabel!
     @IBOutlet weak var modelLossLabel: UILabel!
     
+    // Health data
     private let userHealthProfile = HealthProfile()
+    
+    // SwiftSyft
     private var syftJob: SyftJob?
     private var syftClient: SyftClient?
     
-    var spinner = UIActivityIndicatorView(style: .large)
+    // Spinner UI
+    var spinner: NVActivityIndicatorView!
+    var fadeView: UIView!
+    
+    // Helper to restrict UserDefaults keys
+    enum UserDefaultsKey: String {
+        case healthKitAuthorized = "healthKitAuthorized"
+        case trainingResult = "trainingResult"
+        case BMI = "bodyMassIndex"
+        case age = "age"
+        case sex = "biologicalSex"
+        case bloodType = "bloodType"
+        case weight = "weightInKilograms"
+        case height = "heightInMeters"
+        case steps = "stepCount"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateLabels()
-//        updateHealthKitDataCell.addGradientBackground(firstColor: UIColor(red: 0.24, green: 0.04, blue: 0.42, alpha: 1.00),
-//                                                      secondColor:  UIColor(red: 0.69, green: 0.44, blue: 0.92, alpha: 1.00))
         self.navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont(name: "Avenir", size: 30)!]
-        
-        spinner.hidesWhenStopped = true
-        spinner.center = self.view.center
-        spinner.style = .large
-        self.view.addSubview(spinner)
-        self.view.bringSubviewToFront(spinner)
+        configureSpinner()
+        updateLabels()
     }
     
     // MARK: UI Helpers
     
+    // Configure loading view
+    func configureSpinner() {
+        spinner = NVActivityIndicatorView(frame: UIScreen.main.bounds, type: .pacman, color: .white, padding: view.frame.width / 3)
+        fadeView = UIView(frame: self.view.frame)
+        fadeView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        self.view.addSubview(fadeView)
+        self.view.bringSubviewToFront(fadeView)
+        fadeView.isHidden = true
+        self.view.addSubview(spinner)
+        self.view.bringSubviewToFront(spinner)
+    }
+    
+    // Start animating loading view on faded back screen
+    func showSpinner() {
+        fadeView.isHidden = false
+        spinner.startAnimating()
+    }
+    
+    // Stop animating loading view
+    func hideSpinner() {
+        fadeView.isHidden = true
+        spinner.stopAnimating()
+    }
+    
     // Display alert as popup with OK message given error or hard-coded message
     private func displayAlert(for error: Error?, title: String, message: String?) {
         
-        DispatchQueue.main.sync {
-            spinner.stopAnimating()
+        DispatchQueue.main.async {
+            self.hideSpinner()
             
             let alert = UIAlertController(title: title,
                                           message: error?.localizedDescription ?? message,
@@ -60,79 +96,83 @@ class HealthDataTableViewController: UITableViewController {
             alert.addAction(UIAlertAction(title: "OK",
                                           style: .default,
                                           handler: nil))
-            present(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
+    // Refresh health data from HealthKit; store in UserDefaults
     private func updateHealthInfo() {
-        spinner.startAnimating()
+        showSpinner()
         loadAndDisplayAgeSexAndBloodType()
         loadAndDisplayMostRecentHeight()
         loadAndDisplayMostRecentWeight()
         loadAndDisplayMostRecentSteps()
-        UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: "bodyMassIndex")
-        updateLabels()
-        spinner.stopAnimating()
+        hideSpinner()
     }
     
+    // Update table data from UserDefaults stored values
     private func updateLabels() {
         
-        spinner.startAnimating()
+        showSpinner()
         
-        if let authorized = UserDefaults.standard.object(forKey: "healthKitAuthorized") as? Bool {
+        if let authorized = UserDefaults.standard.object(forKey: UserDefaultsKey.healthKitAuthorized.rawValue) as? Bool {
             self.authorizedStatusLabel.text = authorized ? "Authorized" : "Unauthorized"
             self.authorizedStatusLabel.textColor = authorized ? UIColor.systemGreen : UIColor.systemRed
+            self.authorizeHealthKitLabel.text = authorized ? "Refresh Health Data" : "Authorize HealthKit"
         }
         
-        if let result = UserDefaults.standard.string(forKey: "trainingResult") {
+        if let result = UserDefaults.standard.string(forKey: UserDefaultsKey.trainingResult.rawValue) {
             modelLossLabel.text = result
         }
         
-        if let age = UserDefaults.standard.object(forKey: "age") {
+        if let age = UserDefaults.standard.object(forKey: UserDefaultsKey.age.rawValue) {
             ageLabel.text = "\(age)"
         }
         
-        if let biologicalSex = UserDefaults.standard.object(forKey: "biologicalSex") {
+        if let biologicalSex = UserDefaults.standard.object(forKey: UserDefaultsKey.sex.rawValue) {
             biologicalSexLabel.text = biologicalSex as? String
         }
         
-        if let bloodType = UserDefaults.standard.object(forKey: "bloodType") {
+        if let bloodType = UserDefaults.standard.object(forKey: UserDefaultsKey.bloodType.rawValue) {
             bloodTypeLabel.text = bloodType as? String
         }
         
-        if let weight = UserDefaults.standard.object(forKey: "weightInKilograms") {
+        if let weight = UserDefaults.standard.object(forKey: UserDefaultsKey.weight.rawValue) {
             let weightFormatter = MassFormatter()
             weightFormatter.isForPersonMassUse = true
             weightLabel.text = weightFormatter.string(fromKilograms: weight as! Double)
         }
         
-        if let height = UserDefaults.standard.object(forKey: "heightInMeters") {
+        if let height = UserDefaults.standard.object(forKey: UserDefaultsKey.height.rawValue) {
             let heightFormatter = LengthFormatter()
             heightFormatter.isForPersonHeightUse = true
             heightLabel.text = heightFormatter.string(fromMeters: height as! Double)
         }
         
-        if let bodyMassIndex = UserDefaults.standard.object(forKey: "bodyMassIndex") {
+        if let bodyMassIndex = UserDefaults.standard.object(forKey: UserDefaultsKey.BMI.rawValue) {
             bodyMassIndexLabel.text = String(format: "%.02f", bodyMassIndex as! Double)
         }
         
-        if let stepCount = UserDefaults.standard.object(forKey: "stepCount") {
+        if let stepCount = UserDefaults.standard.object(forKey: UserDefaultsKey.steps.rawValue) {
             stepCountLabel.text = "\(stepCount)"
         }
         
-        spinner.stopAnimating()
+        hideSpinner()
     }
     
-    // MARK: HealthKit Authorization
+    // MARK: HealthKit
         
     // Call helper function to present HealthKit Authorization flow
     private func authorizeHealthKit() {
+        
+        showSpinner()
       
         HealthKitCalls.authorizeHealthKit { (authorized, error) in
         
             guard authorized else {
                 
-                UserDefaults.standard.set(false, forKey: "healthKitAuthorized")
+                UserDefaults.standard.set(false, forKey: UserDefaultsKey.healthKitAuthorized.rawValue)
+                self.updateLabels()
                 
                 // Display error alert
                 DispatchQueue.main.sync {
@@ -144,15 +184,15 @@ class HealthDataTableViewController: UITableViewController {
             }
             
             DispatchQueue.main.sync {
-                UserDefaults.standard.set(true, forKey: "healthKitAuthorized")
+                UserDefaults.standard.set(true, forKey: UserDefaultsKey.healthKitAuthorized.rawValue)
+                self.updateLabels()
+                self.updateHealthInfo()
+                self.hideSpinner()
             }
         }
-        
-        updateLabels()
     }
-    
-    // MARK: HealthKit Data Loading
-    
+        
+    // Pull age, sex, and blood type from HealthKit; else show error
     private func loadAndDisplayAgeSexAndBloodType() {
         
         do {
@@ -162,16 +202,19 @@ class HealthDataTableViewController: UITableViewController {
             userHealthProfile.bloodType = userAgeSexAndBloodType.bloodType
             
             UserDefaults.standard.set(userHealthProfile.age, forKey: "age")
-            UserDefaults.standard.set(userHealthProfile.biologicalSex?.toString, forKey: "biologicalSex")
-            UserDefaults.standard.set(userHealthProfile.bloodType?.toString, forKey: "bloodType")
+            UserDefaults.standard.set(userHealthProfile.biologicalSex?.toString, forKey: UserDefaultsKey.sex.rawValue)
+            UserDefaults.standard.set(userHealthProfile.bloodType?.toString, forKey: UserDefaultsKey.bloodType.rawValue)
             
             updateLabels()
             
         } catch let error {
-            self.displayAlert(for: error, title: "Error Loading Sex And Blood Type", message: nil)
+            self.displayAlert(for: error,
+                              title: "Error Loading Sex And Blood Type",
+                              message: nil)
         }
     }
     
+    // Pull height from HealthKit; else show error
     private func loadAndDisplayMostRecentHeight() {
         
         // Use HealthKit to create the Height Sample Type
@@ -192,19 +235,21 @@ class HealthDataTableViewController: UITableViewController {
                 return
             }
             
-            // Convert the height sample to meters, save to the profile model, and update the user interface.
+            // Convert the height sample to meters, save to the profile model, and update the user interface
             let heightInMeters = sample.quantity.doubleValue(for: HKUnit.meter())
             self.userHealthProfile.heightInMeters = heightInMeters
             
-            UserDefaults.standard.set(self.userHealthProfile.heightInMeters, forKey: "heightInMeters")
-            UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: "bodyMassIndex")
+            UserDefaults.standard.set(self.userHealthProfile.heightInMeters, forKey: UserDefaultsKey.height.rawValue)
+            UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: UserDefaultsKey.BMI.rawValue)
             
             self.updateLabels()
         }
     }
     
+    // Pull weight from HealthKit; else show error
     private func loadAndDisplayMostRecentWeight() {
         
+        // Use HealthKit to create the Weight Sample Type
         guard let weightSampleType = HKSampleType.quantityType(forIdentifier: .bodyMass) else {
             self.displayAlert(for: nil,
                               title: "Body Mass Sample Error",
@@ -220,16 +265,18 @@ class HealthDataTableViewController: UITableViewController {
                 return
             }
             
+            // Convert the weight sample to kilograms, save to the profile model, and update the user interface
             let weightInKilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
             self.userHealthProfile.weightInKilograms = weightInKilograms
             
-            UserDefaults.standard.set(self.userHealthProfile.weightInKilograms, forKey: "weightInKilograms")
-            UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: "bodyMassIndex")
+            UserDefaults.standard.set(self.userHealthProfile.weightInKilograms, forKey: UserDefaultsKey.weight.rawValue)
+            UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: UserDefaultsKey.BMI.rawValue)
 
             self.updateLabels()
         }
     }
     
+    // Pull step count from HealthKit; else show error
     private func loadAndDisplayMostRecentSteps() {
         
         guard let stepCountSampleType = HKSampleType.quantityType(forIdentifier: .stepCount) else {
@@ -239,7 +286,8 @@ class HealthDataTableViewController: UITableViewController {
             return
         }
         
-        HealthKitCalls.getSamples(for: stepCountSampleType, startDate: Calendar.current.startOfDay(for: Date()), mostRecentOnly: false) {
+        // Pull all step samples from one week ago until now
+        HealthKitCalls.getSamples(for: stepCountSampleType, startDate: Date(timeIntervalSinceNow: -7*24*60*60), mostRecentOnly: false) {
             (samples, error) in
             
             guard let samples = samples else {
@@ -249,9 +297,9 @@ class HealthDataTableViewController: UITableViewController {
                 return
             }
             
+            // Sum step counts, save to the profile model, and update the user interface
             var stepCount = 0.0
             for sample in samples {
-                
                 guard let quantitySample = sample as? HKQuantitySample else {
                     self.displayAlert(for: error,
                                       title: "Error Loading Step Count",
@@ -262,12 +310,15 @@ class HealthDataTableViewController: UITableViewController {
             }
             self.userHealthProfile.stepCount = stepCount
             
-            UserDefaults.standard.set(self.userHealthProfile.stepCount, forKey: "stepCount")
+            UserDefaults.standard.set(self.userHealthProfile.stepCount, forKey: UserDefaultsKey.steps.rawValue)
 
             self.updateLabels()
         }
     }
     
+    // MARK: PyGrid
+    
+    // All code to connect to PyGrid node, prepare data, train, and update model in node
     func trainModel() {
         // This is a demonstration of how to use SwiftSyft with PyGrid to train a plan on local data on an iOS device
         // Get token from here on the "Model-Centric Test" notebook: https://github.com/dartmouth-cs98/artificien_experimental/blob/main/deploymentExamples/model_centric_test.ipynb
@@ -287,10 +338,10 @@ class HealthDataTableViewController: UITableViewController {
         self.syftClient = syftClient
         
         // Show loading UI
-        spinner.startAnimating()
+        showSpinner()
         
         // Create a new federated learning job with the model name and version
-        self.syftJob = syftClient.newJob(modelName: "perceptron", version: "0.2.0")
+        self.syftJob = syftClient.newJob(modelName: "perceptron", version: "0.3.0")
         
         // This function is called when SwiftSyft has downloaded the plans and model parameters from PyGrid
         // You are ready to train your model on your data
@@ -328,7 +379,9 @@ class HealthDataTableViewController: UITableViewController {
                 let diffStateData = try plan.generateDiffData()
                 modelReport(diffStateData)
                 
-                self.displayAlert(for: nil, title: "Training Finished", message: "Training successful with a loss of \(loss)")
+                self.displayAlert(for: nil,
+                                  title: "Training Complete",
+                                  message: "Training successful with a loss of \(loss)")
                 DispatchQueue.main.sync { self.updateLabels() }
                 
             } catch let error {
@@ -350,6 +403,7 @@ class HealthDataTableViewController: UITableViewController {
             self.displayAlert(for: error,
                               title: "Job execution error",
                               message: nil)
+            return
         })
         
         // This is the error handler for being rejected in a cycle. You can retry again
@@ -369,24 +423,36 @@ class HealthDataTableViewController: UITableViewController {
     
     // MARK: UITableView Delegate
     
+    // Set table fonts
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = UIFont(name: "Avenir", size: 14)
     }
         
+    // Handle button actions
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      
+            
         tableView.deselectRow(at: indexPath, animated: true)   // Handle issue of cell remaining depressed
+        
+        let healthKitIsAuthorized = UserDefaults.standard.bool(forKey: UserDefaultsKey.healthKitAuthorized.rawValue)
 
-        if indexPath.section == 4 {
+        // Model actions
+        if indexPath.section == 0 {
             if indexPath.row == 1 {
-                authorizeHealthKit()
+                if healthKitIsAuthorized { trainModel() }
+                else {
+                    displayAlert(for: nil,
+                                 title: "Hold up!",
+                                 message: "Please authorize access to your health data to enable the model to train on it.")
+                }
             }
-            if indexPath.row == 2 {
-                updateHealthInfo()
-            }
-            if indexPath.row == 3 {
-                trainModel()
+        }
+        
+        // HealthKit actions
+        if indexPath.section == 1 {
+            if indexPath.row == 1 {
+                // Authorize HealthKit if unauthorized; else update health data
+                healthKitIsAuthorized ? updateHealthInfo() : authorizeHealthKit()
             }
         }
     }
