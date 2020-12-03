@@ -324,7 +324,7 @@
                             <outlet property="delegate" destination="SOR-c7-Fmq" id="YaR-Ee-J9B"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="User Health Data" largeTitleDisplayMode="always" id="Dhp-J9-vP2"/>
+                    <navigationItem key="navigationItem" title="Artificien" largeTitleDisplayMode="always" id="Dhp-J9-vP2"/>
                     <connections>
                         <outlet property="ageLabel" destination="5ql-PR-HX7" id="PTi-Dq-FYS"/>
                         <outlet property="authorizeHealthKitLabel" destination="q3t-iW-yvV" id="Axt-ri-8nM"/>
