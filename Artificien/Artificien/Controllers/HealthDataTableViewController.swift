@@ -14,8 +14,7 @@ class HealthDataTableViewController: UITableViewController {
     
     // MARK: Outlets & Setup
     
-    @IBOutlet weak var authorizeHealthKitCell: UITableViewCell!
-    @IBOutlet weak var updateHealthKitDataCell: UITableViewCell!
+    @IBOutlet weak var authorizeHealthKitLabel: UILabel!
     @IBOutlet weak var authorizedStatusLabel: UILabel!
     @IBOutlet weak var ageLabel: UILabel!
     @IBOutlet weak var biologicalSexLabel: UILabel!
@@ -30,13 +29,23 @@ class HealthDataTableViewController: UITableViewController {
     private var syftJob: SyftJob?
     private var syftClient: SyftClient?
     
+    enum UserDefaultsKey: String {
+        case healthKitAuthorized = "healthKitAuthorized"
+        case trainingResult = "trainingResult"
+        case BMI = "bodyMassIndex"
+        case age = "age"
+        case sex = "biologicalSex"
+        case bloodType = "bloodType"
+        case weight = "weightInKilograms"
+        case height = "heightInMeters"
+        case steps = "stepCount"
+    }
+    
     var spinner = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         updateLabels()
-//        updateHealthKitDataCell.addGradientBackground(firstColor: UIColor(red: 0.24, green: 0.04, blue: 0.42, alpha: 1.00),
-//                                                      secondColor:  UIColor(red: 0.69, green: 0.44, blue: 0.92, alpha: 1.00))
         self.navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont(name: "Avenir", size: 30)!]
         
         spinner.hidesWhenStopped = true
@@ -70,7 +79,7 @@ class HealthDataTableViewController: UITableViewController {
         loadAndDisplayMostRecentHeight()
         loadAndDisplayMostRecentWeight()
         loadAndDisplayMostRecentSteps()
-        UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: "bodyMassIndex")
+//        UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: UserDefaultsKey.BMI.rawValue)
         updateLabels()
         spinner.stopAnimating()
     }
@@ -79,44 +88,45 @@ class HealthDataTableViewController: UITableViewController {
         
         spinner.startAnimating()
         
-        if let authorized = UserDefaults.standard.object(forKey: "healthKitAuthorized") as? Bool {
+        if let authorized = UserDefaults.standard.object(forKey: UserDefaultsKey.healthKitAuthorized.rawValue) as? Bool {
             self.authorizedStatusLabel.text = authorized ? "Authorized" : "Unauthorized"
             self.authorizedStatusLabel.textColor = authorized ? UIColor.systemGreen : UIColor.systemRed
+            self.authorizeHealthKitLabel.text = authorized ? "Refresh Health Data" : "Authorize HealthKit"
         }
         
-        if let result = UserDefaults.standard.string(forKey: "trainingResult") {
+        if let result = UserDefaults.standard.string(forKey: UserDefaultsKey.trainingResult.rawValue) {
             modelLossLabel.text = result
         }
         
-        if let age = UserDefaults.standard.object(forKey: "age") {
+        if let age = UserDefaults.standard.object(forKey: UserDefaultsKey.age.rawValue) {
             ageLabel.text = "\(age)"
         }
         
-        if let biologicalSex = UserDefaults.standard.object(forKey: "biologicalSex") {
+        if let biologicalSex = UserDefaults.standard.object(forKey: UserDefaultsKey.sex.rawValue) {
             biologicalSexLabel.text = biologicalSex as? String
         }
         
-        if let bloodType = UserDefaults.standard.object(forKey: "bloodType") {
+        if let bloodType = UserDefaults.standard.object(forKey: UserDefaultsKey.bloodType.rawValue) {
             bloodTypeLabel.text = bloodType as? String
         }
         
-        if let weight = UserDefaults.standard.object(forKey: "weightInKilograms") {
+        if let weight = UserDefaults.standard.object(forKey: UserDefaultsKey.weight.rawValue) {
             let weightFormatter = MassFormatter()
             weightFormatter.isForPersonMassUse = true
             weightLabel.text = weightFormatter.string(fromKilograms: weight as! Double)
         }
         
-        if let height = UserDefaults.standard.object(forKey: "heightInMeters") {
+        if let height = UserDefaults.standard.object(forKey: UserDefaultsKey.height.rawValue) {
             let heightFormatter = LengthFormatter()
             heightFormatter.isForPersonHeightUse = true
             heightLabel.text = heightFormatter.string(fromMeters: height as! Double)
         }
         
-        if let bodyMassIndex = UserDefaults.standard.object(forKey: "bodyMassIndex") {
+        if let bodyMassIndex = UserDefaults.standard.object(forKey: UserDefaultsKey.BMI.rawValue) {
             bodyMassIndexLabel.text = String(format: "%.02f", bodyMassIndex as! Double)
         }
         
-        if let stepCount = UserDefaults.standard.object(forKey: "stepCount") {
+        if let stepCount = UserDefaults.standard.object(forKey: UserDefaultsKey.steps.rawValue) {
             stepCountLabel.text = "\(stepCount)"
         }
         
@@ -132,7 +142,8 @@ class HealthDataTableViewController: UITableViewController {
         
             guard authorized else {
                 
-                UserDefaults.standard.set(false, forKey: "healthKitAuthorized")
+                UserDefaults.standard.set(false, forKey: UserDefaultsKey.healthKitAuthorized.rawValue)
+                self.updateLabels()
                 
                 // Display error alert
                 DispatchQueue.main.sync {
@@ -144,11 +155,11 @@ class HealthDataTableViewController: UITableViewController {
             }
             
             DispatchQueue.main.sync {
-                UserDefaults.standard.set(true, forKey: "healthKitAuthorized")
+                UserDefaults.standard.set(true, forKey: UserDefaultsKey.healthKitAuthorized.rawValue)
+                self.updateLabels()
+                self.updateHealthInfo()
             }
         }
-        
-        updateLabels()
     }
     
     // MARK: HealthKit Data Loading
@@ -162,8 +173,8 @@ class HealthDataTableViewController: UITableViewController {
             userHealthProfile.bloodType = userAgeSexAndBloodType.bloodType
             
             UserDefaults.standard.set(userHealthProfile.age, forKey: "age")
-            UserDefaults.standard.set(userHealthProfile.biologicalSex?.toString, forKey: "biologicalSex")
-            UserDefaults.standard.set(userHealthProfile.bloodType?.toString, forKey: "bloodType")
+            UserDefaults.standard.set(userHealthProfile.biologicalSex?.toString, forKey: UserDefaultsKey.sex.rawValue)
+            UserDefaults.standard.set(userHealthProfile.bloodType?.toString, forKey: UserDefaultsKey.bloodType.rawValue)
             
             updateLabels()
             
@@ -196,8 +207,8 @@ class HealthDataTableViewController: UITableViewController {
             let heightInMeters = sample.quantity.doubleValue(for: HKUnit.meter())
             self.userHealthProfile.heightInMeters = heightInMeters
             
-            UserDefaults.standard.set(self.userHealthProfile.heightInMeters, forKey: "heightInMeters")
-            UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: "bodyMassIndex")
+            UserDefaults.standard.set(self.userHealthProfile.heightInMeters, forKey: UserDefaultsKey.height.rawValue)
+            UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: UserDefaultsKey.BMI.rawValue)
             
             self.updateLabels()
         }
@@ -223,8 +234,8 @@ class HealthDataTableViewController: UITableViewController {
             let weightInKilograms = sample.quantity.doubleValue(for: HKUnit.gramUnit(with: .kilo))
             self.userHealthProfile.weightInKilograms = weightInKilograms
             
-            UserDefaults.standard.set(self.userHealthProfile.weightInKilograms, forKey: "weightInKilograms")
-            UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: "bodyMassIndex")
+            UserDefaults.standard.set(self.userHealthProfile.weightInKilograms, forKey: UserDefaultsKey.weight.rawValue)
+            UserDefaults.standard.set(self.userHealthProfile.bodyMassIndex, forKey: UserDefaultsKey.BMI.rawValue)
 
             self.updateLabels()
         }
@@ -239,7 +250,7 @@ class HealthDataTableViewController: UITableViewController {
             return
         }
         
-        HealthKitCalls.getSamples(for: stepCountSampleType, startDate: Calendar.current.startOfDay(for: Date()), mostRecentOnly: false) {
+        HealthKitCalls.getSamples(for: stepCountSampleType, startDate: Date(timeIntervalSinceNow: -7*24*60*60), mostRecentOnly: false) {
             (samples, error) in
             
             guard let samples = samples else {
@@ -262,7 +273,7 @@ class HealthDataTableViewController: UITableViewController {
             }
             self.userHealthProfile.stepCount = stepCount
             
-            UserDefaults.standard.set(self.userHealthProfile.stepCount, forKey: "stepCount")
+            UserDefaults.standard.set(self.userHealthProfile.stepCount, forKey: UserDefaultsKey.steps.rawValue)
 
             self.updateLabels()
         }
@@ -378,15 +389,17 @@ class HealthDataTableViewController: UITableViewController {
       
         tableView.deselectRow(at: indexPath, animated: true)   // Handle issue of cell remaining depressed
 
-        if indexPath.section == 4 {
+        // Model actions
+        if indexPath.section == 0 {
             if indexPath.row == 1 {
-                authorizeHealthKit()
-            }
-            if indexPath.row == 2 {
-                updateHealthInfo()
-            }
-            if indexPath.row == 3 {
                 trainModel()
+            }
+        }
+        
+        // HealthKit actions
+        if indexPath.section == 1 {
+            if indexPath.row == 1 {
+                UserDefaults.standard.bool(forKey: UserDefaultsKey.healthKitAuthorized.rawValue) ? updateHealthInfo() : authorizeHealthKit()
             }
         }
     }
