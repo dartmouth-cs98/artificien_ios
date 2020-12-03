@@ -34,10 +34,9 @@ class HealthDataTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        checkHealthKitStatus()
         updateLabels()
-        updateHealthKitDataCell.addGradientBackground(firstColor: UIColor(red: 0.24, green: 0.04, blue: 0.42, alpha: 1.00),
-                                                      secondColor:  UIColor(red: 0.69, green: 0.44, blue: 0.92, alpha: 1.00))
+//        updateHealthKitDataCell.addGradientBackground(firstColor: UIColor(red: 0.24, green: 0.04, blue: 0.42, alpha: 1.00),
+//                                                      secondColor:  UIColor(red: 0.69, green: 0.44, blue: 0.92, alpha: 1.00))
         self.navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont(name: "Avenir", size: 30)!]
         
         spinner.hidesWhenStopped = true
@@ -48,19 +47,6 @@ class HealthDataTableViewController: UITableViewController {
     }
     
     // MARK: UI Helpers
-    
-    // Check whether HealthKit has already been authorized and toggle relevant indicators
-    private func checkHealthKitStatus() {
-        
-        spinner.startAnimating()
-        
-        let healthKitAuthorized = HKHealthStore.isHealthDataAvailable()
-        self.authorizedStatusLabel.text = healthKitAuthorized ? "Authorized" : "Unauthorized"
-        self.authorizedStatusLabel.textColor = healthKitAuthorized ? UIColor.systemGreen : UIColor.systemRed
-        // self.authorizeHealthKitCell.isHidden = healthKitAuthorized
-        
-        spinner.stopAnimating()
-    }
     
     // Display alert as popup with OK message given error or hard-coded message
     private func displayAlert(for error: Error?, title: String, message: String?) {
@@ -90,6 +76,13 @@ class HealthDataTableViewController: UITableViewController {
     }
     
     private func updateLabels() {
+        
+        spinner.startAnimating()
+        
+        if let authorized = UserDefaults.standard.object(forKey: "healthKitAuthorized") as? Bool {
+            self.authorizedStatusLabel.text = authorized ? "Authorized" : "Unauthorized"
+            self.authorizedStatusLabel.textColor = authorized ? UIColor.systemGreen : UIColor.systemRed
+        }
         
         if let result = UserDefaults.standard.string(forKey: "trainingResult") {
             modelLossLabel.text = result
@@ -126,6 +119,8 @@ class HealthDataTableViewController: UITableViewController {
         if let stepCount = UserDefaults.standard.object(forKey: "stepCount") {
             stepCountLabel.text = "\(stepCount)"
         }
+        
+        spinner.stopAnimating()
     }
     
     // MARK: HealthKit Authorization
@@ -137,6 +132,8 @@ class HealthDataTableViewController: UITableViewController {
         
             guard authorized else {
                 
+                UserDefaults.standard.set(false, forKey: "healthKitAuthorized")
+                
                 // Display error alert
                 DispatchQueue.main.sync {
                     self.displayAlert(for: error,
@@ -147,9 +144,11 @@ class HealthDataTableViewController: UITableViewController {
             }
             
             DispatchQueue.main.sync {
-                self.checkHealthKitStatus()
+                UserDefaults.standard.set(true, forKey: "healthKitAuthorized")
             }
         }
+        
+        updateLabels()
     }
     
     // MARK: HealthKit Data Loading
