@@ -320,10 +320,27 @@ class HealthDataTableViewController: UITableViewController {
     
     // All code to connect to PyGrid node, prepare data, train, and update model in node
     func trainModel() {
+        
+        guard let age = UserDefaults.standard.object(forKey: "age") as? Int,
+              let bodyMassIndex = UserDefaults.standard.object(forKey: "bodyMassIndex") as? Double,
+              let sex = UserDefaults.standard.object(forKey: "biologicalSex") as? String,
+              let stepCount = UserDefaults.standard.object(forKey: "stepCount") as? Int else {
+            
+            self.displayAlert(for: nil,
+                              title: "Pre-processing error",
+                              message: "Please ensure your age, height, weight, biological sex, and step count are in your Apple Health app.")
+            
+            return
+        }
+        
+        let sexAsInt = sex == "Male" ? 1 : 0
+        let healthTrainData: [Float] = [Float(age), Float(sexAsInt), Float(bodyMassIndex)]
+        let healthValData: [Float] = [Float(stepCount)]
+        
         // This is a demonstration of how to use SwiftSyft with PyGrid to train a plan on local data on an iOS device
         // Get token from here on the "Model-Centric Test" notebook: https://github.com/dartmouth-cs98/artificien_experimental/blob/main/deploymentExamples/model_centric_test.ipynb
         let authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.e30.Cn_0cSjCw1QKtcYDx_mYN_q9jO2KkpcUoiVbILmKVB4LUCQvZ7YeuyQ51r9h3562KQoSas_ehbjpz2dw1Dk24hQEoN6ObGxfJDOlemF5flvLO_sqAHJDGGE24JRE4lIAXRK6aGyy4f4kmlICL6wG8sGSpSrkZlrFLOVRJckTptgaiOTIm5Udfmi45NljPBQKVpqXFSmmb3dRy_e8g3l5eBVFLgrBhKPQ1VbNfRK712KlQWs7jJ31fGpW2NxMloO1qcd6rux48quivzQBCvyK8PV5Sqrfw_OMOoNLcSvzePDcZXa2nPHSu3qQIikUdZIeCnkJX-w0t8uEFG3DfH1fVA"
-        let pyGridNodeAddress = "http://pygri-pygri-frtwp3inl2zq-2ea21a767266378c.elb.us-east-1.amazonaws.com:5000/"
+        let pyGridNodeAddress = "http://pygri-pygri-8gi3im722eon-f085cdd634715f92.elb.us-east-1.amazonaws.com:5000/"
         
         // Create a client with a PyGrid server URL
         guard let syftClient = SyftClient(url: URL(string: pyGridNodeAddress)!, authToken: authToken) else {
@@ -349,22 +366,6 @@ class HealthDataTableViewController: UITableViewController {
         // clientConfig - contains the configuration for the training cycle (batchSize, learning rate) and metadata for the model (name, version)
         // modelReport - Used as a completion block and reports the diffs to PyGrid.
         self.syftJob?.onReady(execute: { plan, clientConfig, modelReport in
-            
-            guard let age = UserDefaults.standard.object(forKey: "age") as? Int,
-                  let bodyMassIndex = UserDefaults.standard.object(forKey: "bodyMassIndex") as? Double,
-                  let sex = UserDefaults.standard.object(forKey: "biologicalSex") as? String,
-                  let stepCount = UserDefaults.standard.object(forKey: "stepCount") as? Int else {
-                
-                self.displayAlert(for: nil,
-                                  title: "Pre-processing error",
-                                  message: "Unable to access user data")
-                
-                return
-            }
-            
-            let sexAsInt = sex == "Male" ? 1 : 0
-            let healthTrainData: [Float] = [Float(age), Float(sexAsInt), Float(bodyMassIndex)]
-            let healthValData: [Float] = [Float(stepCount)]
             
             do {
                 // Since we don't have native tensor wrappers in Swift yet, we use `TrainingData` and `ValidationData` classes to store the data and shape.
