@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7727E7AB00E849F8A80C6EF5 /* Pods_Artificien.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D65029C59E9A7506716A98A /* Pods_Artificien.framework */; };
 		B175D34025461D120002D7BA /* HealthKitCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D33F25461D120002D7BA /* HealthKitCalls.swift */; };
 		B175D342254625FF0002D7BA /* HealthDataTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D341254625FF0002D7BA /* HealthDataTableViewController.swift */; };
 		B175D3462546386A0002D7BA /* HealthProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B175D345254638690002D7BA /* HealthProfile.swift */; };
@@ -20,11 +19,12 @@
 		B19C684D253E08C3007D9CEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B19C684C253E08C3007D9CEE /* Assets.xcassets */; };
 		B19C6850253E08C3007D9CEE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B19C684E253E08C3007D9CEE /* LaunchScreen.storyboard */; };
 		B1E73AC9255A1C39005DD2AD /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B175D33D25461AE10002D7BA /* HealthKit.framework */; };
+		CEE03E8BED1A7BED2E9D8D04 /* Pods_Artificien_Health.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17078BD3CE730877198BA588 /* Pods_Artificien_Health.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0C0B609BE59F4380A047E8B8 /* Pods-Artificien.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artificien.debug.xcconfig"; path = "Target Support Files/Pods-Artificien/Pods-Artificien.debug.xcconfig"; sourceTree = "<group>"; };
-		7D65029C59E9A7506716A98A /* Pods_Artificien.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artificien.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		17078BD3CE730877198BA588 /* Pods_Artificien_Health.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artificien_Health.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E1D4653956B0B1E101F1FE5 /* Pods-Artificien-Health.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artificien-Health.release.xcconfig"; path = "Target Support Files/Pods-Artificien-Health/Pods-Artificien-Health.release.xcconfig"; sourceTree = "<group>"; };
 		B175D33B25461AE00002D7BA /* Artificien.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Artificien.entitlements; sourceTree = "<group>"; };
 		B175D33D25461AE10002D7BA /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		B175D33F25461D120002D7BA /* HealthKitCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitCalls.swift; sourceTree = "<group>"; };
@@ -33,14 +33,14 @@
 		B175D34825463EFE0002D7BA /* HKBiologicalSexExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKBiologicalSexExtensions.swift; sourceTree = "<group>"; };
 		B175D34A25463F0E0002D7BA /* HKBloodTypeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKBloodTypeExtensions.swift; sourceTree = "<group>"; };
 		B175D34F2546643C0002D7BA /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
-		B19C6840253E08BD007D9CEE /* Artificien.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artificien.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B19C6840253E08BD007D9CEE /* Artificien-Health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Artificien-Health.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B19C6843253E08BD007D9CEE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B19C6845253E08BD007D9CEE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B19C684A253E08BD007D9CEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B19C684C253E08C3007D9CEE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B19C684F253E08C3007D9CEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B19C6851253E08C3007D9CEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C4E131C441A12CC5790FD612 /* Pods-Artificien.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artificien.release.xcconfig"; path = "Target Support Files/Pods-Artificien/Pods-Artificien.release.xcconfig"; sourceTree = "<group>"; };
+		F4548999E8E5A625D8B0CA5C /* Pods-Artificien-Health.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artificien-Health.debug.xcconfig"; path = "Target Support Files/Pods-Artificien-Health/Pods-Artificien-Health.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +49,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1E73AC9255A1C39005DD2AD /* HealthKit.framework in Frameworks */,
-				7727E7AB00E849F8A80C6EF5 /* Pods_Artificien.framework in Frameworks */,
+				CEE03E8BED1A7BED2E9D8D04 /* Pods_Artificien_Health.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,7 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				B175D33D25461AE10002D7BA /* HealthKit.framework */,
-				7D65029C59E9A7506716A98A /* Pods_Artificien.framework */,
+				17078BD3CE730877198BA588 /* Pods_Artificien_Health.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -113,7 +113,7 @@
 		B19C6841253E08BD007D9CEE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B19C6840253E08BD007D9CEE /* Artificien.app */,
+				B19C6840253E08BD007D9CEE /* Artificien-Health.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,8 +138,8 @@
 		EB70B9A007E54466D913F55E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0C0B609BE59F4380A047E8B8 /* Pods-Artificien.debug.xcconfig */,
-				C4E131C441A12CC5790FD612 /* Pods-Artificien.release.xcconfig */,
+				F4548999E8E5A625D8B0CA5C /* Pods-Artificien-Health.debug.xcconfig */,
+				9E1D4653956B0B1E101F1FE5 /* Pods-Artificien-Health.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -147,23 +147,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B19C683F253E08BD007D9CEE /* Artificien */ = {
+		B19C683F253E08BD007D9CEE /* Artificien-Health */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B19C6854253E08C3007D9CEE /* Build configuration list for PBXNativeTarget "Artificien" */;
+			buildConfigurationList = B19C6854253E08C3007D9CEE /* Build configuration list for PBXNativeTarget "Artificien-Health" */;
 			buildPhases = (
-				EA4B9209963DFD929A3C9B92 /* [CP] Check Pods Manifest.lock */,
+				4A66BE89FC80F21D7AADE4AC /* [CP] Check Pods Manifest.lock */,
 				B19C683C253E08BD007D9CEE /* Sources */,
 				B19C683D253E08BD007D9CEE /* Frameworks */,
 				B19C683E253E08BD007D9CEE /* Resources */,
-				FE4E86CAAF2E696D390BF48A /* [CP] Embed Pods Frameworks */,
+				6ADC20C17E44FD642ABF6AF5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Artificien;
+			name = "Artificien-Health";
 			productName = Artificien;
-			productReference = B19C6840253E08BD007D9CEE /* Artificien.app */;
+			productReference = B19C6840253E08BD007D9CEE /* Artificien-Health.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -181,7 +181,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B19C683B253E08BD007D9CEE /* Build configuration list for PBXProject "Artificien" */;
+			buildConfigurationList = B19C683B253E08BD007D9CEE /* Build configuration list for PBXProject "Artificien-Health" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -194,7 +194,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B19C683F253E08BD007D9CEE /* Artificien */,
+				B19C683F253E08BD007D9CEE /* Artificien-Health */,
 			);
 		};
 /* End PBXProject section */
@@ -213,7 +213,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		EA4B9209963DFD929A3C9B92 /* [CP] Check Pods Manifest.lock */ = {
+		4A66BE89FC80F21D7AADE4AC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -228,28 +228,28 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Artificien-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Artificien-Health-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FE4E86CAAF2E696D390BF48A /* [CP] Embed Pods Frameworks */ = {
+		6ADC20C17E44FD642ABF6AF5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artificien/Pods-Artificien-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Artificien-Health/Pods-Artificien-Health-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artificien/Pods-Artificien-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Artificien-Health/Pods-Artificien-Health-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artificien/Pods-Artificien-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artificien-Health/Pods-Artificien-Health-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -408,7 +408,7 @@
 		};
 		B19C6855253E08C3007D9CEE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0C0B609BE59F4380A047E8B8 /* Pods-Artificien.debug.xcconfig */;
+			baseConfigurationReference = F4548999E8E5A625D8B0CA5C /* Pods-Artificien-Health.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Artificien/Artificien.entitlements;
@@ -433,7 +433,7 @@
 		};
 		B19C6856253E08C3007D9CEE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C4E131C441A12CC5790FD612 /* Pods-Artificien.release.xcconfig */;
+			baseConfigurationReference = 9E1D4653956B0B1E101F1FE5 /* Pods-Artificien-Health.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Artificien/Artificien.entitlements;
@@ -459,7 +459,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B19C683B253E08BD007D9CEE /* Build configuration list for PBXProject "Artificien" */ = {
+		B19C683B253E08BD007D9CEE /* Build configuration list for PBXProject "Artificien-Health" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B19C6852253E08C3007D9CEE /* Debug */,
@@ -468,7 +468,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B19C6854253E08C3007D9CEE /* Build configuration list for PBXNativeTarget "Artificien" */ = {
+		B19C6854253E08C3007D9CEE /* Build configuration list for PBXNativeTarget "Artificien-Health" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B19C6855253E08C3007D9CEE /* Debug */,

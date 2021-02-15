@@ -1,4 +1,6 @@
 PODS:
+  - Artificien (0.1.0):
+    - OpenMinedSwiftSyft (~> 0.1.3-beta2)
   - GoogleWebRTC (1.1.31999)
   - LibTorch (1.6.1):
     - LibTorch/Core (= 1.6.1)
@@ -17,6 +19,7 @@ PODS:
     - SwiftProtobuf (~> 1.8.0)
 
 DEPENDENCIES:
+  - Artificien (from `https://github.com/dartmouth-cs98/artificien_ios_library.git`)
   - NVActivityIndicatorView
   - OpenMinedSwiftSyft (~> 0.1.3-beta2)
 
@@ -29,7 +32,17 @@ SPEC REPOS:
     - SwiftProtobuf
     - SyftProto
 
+EXTERNAL SOURCES:
+  Artificien:
+    :git: https://github.com/dartmouth-cs98/artificien_ios_library.git
+
+CHECKOUT OPTIONS:
+  Artificien:
+    :commit: fdca10e2a15ec2d8deb81838eba0f272a4cd2975
+    :git: https://github.com/dartmouth-cs98/artificien_ios_library.git
+
 SPEC CHECKSUMS:
+  Artificien: 064445b4a5f8a604e18cee06d2e46b9680f648d1
   GoogleWebRTC: b39a78c4f5cc6b0323415b9233db03a2faa7b0f0
   LibTorch: 32a83630ab5b4505f205c7e332975a2d3d6e0c55
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
@@ -37,6 +50,6 @@ SPEC CHECKSUMS:
   SwiftProtobuf: 2cbd9409689b7df170d82a92a33443c8e3e14a70
   SyftProto: da02767fd695d222748d6bdf78ff7ddbe7b1982f
 
-PODFILE CHECKSUM: 5a595b553560c451f00820a78c852797f45dae3a
+PODFILE CHECKSUM: db01dc45c78e0f22670eb7ad60191765e5a5bf5d
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

@@ -10,6 +10,7 @@ import UIKit
 import HealthKit
 import SwiftSyft
 import NVActivityIndicatorView
+import Artificien
 
 class HealthDataTableViewController: UITableViewController {
     
@@ -29,6 +30,9 @@ class HealthDataTableViewController: UITableViewController {
     
     // Health data
     private let userHealthProfile = HealthProfile()
+    
+    // Artificien
+    let artificien = Artificien(nodeAddress: "http://pygri-pygri-ino47iknkhg6-f84bffc569e1a0a4.elb.us-east-1.amazonaws.com:5000/")
     
     // SwiftSyft
     private var syftJob: SyftJob?
@@ -318,6 +322,32 @@ class HealthDataTableViewController: UITableViewController {
     
     // MARK: PyGrid
     
+    // Function to prepare and send data to Artificien for training instead of using PyGrid
+    func trainModelWithArtificien() {
+        guard let age = UserDefaults.standard.object(forKey: "age") as? Int,
+              let bodyMassIndex = UserDefaults.standard.object(forKey: "bodyMassIndex") as? Double,
+              let sex = UserDefaults.standard.object(forKey: "biologicalSex") as? String,
+              let stepCount = UserDefaults.standard.object(forKey: "stepCount") as? Int else {
+            
+            self.displayAlert(for: nil,
+                              title: "Pre-processing error",
+                              message: "Unable to access user data")
+            
+            return
+        }
+        
+        let trainDict = [
+            "age": age,
+            "bodyMassIndex": bodyMassIndex,
+            "sex": sex
+        ]
+        let valDict = [
+            "stepCount": stepCount
+        ]
+            
+        artificien.train(trainingData: trainDict, validationData: valDict)
+    }
+    
     // All code to connect to PyGrid node, prepare data, train, and update model in node
     func trainModel() {
         // This is a demonstration of how to use SwiftSyft with PyGrid to train a plan on local data on an iOS device
@@ -439,7 +469,7 @@ class HealthDataTableViewController: UITableViewController {
         // Model actions
         if indexPath.section == 0 {
             if indexPath.row == 1 {
-                if healthKitIsAuthorized { trainModel() }
+                if healthKitIsAuthorized { trainModelWithArtificien() }
                 else {
                     displayAlert(for: nil,
                                  title: "Hold up!",
