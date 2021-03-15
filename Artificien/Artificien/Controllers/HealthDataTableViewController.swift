@@ -8,9 +8,8 @@
 
 import UIKit
 import HealthKit
-import SwiftSyft
-import NVActivityIndicatorView
 import Artificien
+import NVActivityIndicatorView
 
 class HealthDataTableViewController: UITableViewController {
     
@@ -32,11 +31,7 @@ class HealthDataTableViewController: UITableViewController {
     private let userHealthProfile = HealthProfile()
     
     // Artificien
-    let artificien = Artificien(nodeAddress: "http://pygri-pygri-ino47iknkhg6-f84bffc569e1a0a4.elb.us-east-1.amazonaws.com:5000/")
-    
-    // SwiftSyft
-    private var syftJob: SyftJob?
-    private var syftClient: SyftClient?
+    let artificien = Artificien(chargeDetection: false, wifiDetection: false)
     
     // Spinner UI
     var spinner: NVActivityIndicatorView!
@@ -77,19 +72,19 @@ class HealthDataTableViewController: UITableViewController {
     }
     
     // Start animating loading view on faded back screen
-    func showSpinner() {
+    public func showSpinner() {
         fadeView.isHidden = false
         spinner.startAnimating()
     }
     
     // Stop animating loading view
-    func hideSpinner() {
+    public func hideSpinner() {
         fadeView.isHidden = true
         spinner.stopAnimating()
     }
     
     // Display alert as popup with OK message given error or hard-coded message
-    private func displayAlert(for error: Error?, title: String, message: String?) {
+    private func displayAlert(for error: Error?, title: String, message: String?, completion: (() -> Void)? = nil) {
         
         DispatchQueue.main.async {
             self.hideSpinner()
@@ -100,7 +95,7 @@ class HealthDataTableViewController: UITableViewController {
             alert.addAction(UIAlertAction(title: "OK",
                                           style: .default,
                                           handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: completion)
         }
     }
     
@@ -122,7 +117,7 @@ class HealthDataTableViewController: UITableViewController {
         if let authorized = UserDefaults.standard.object(forKey: UserDefaultsKey.healthKitAuthorized.rawValue) as? Bool {
             self.authorizedStatusLabel.text = authorized ? "Authorized" : "Unauthorized"
             self.authorizedStatusLabel.textColor = authorized ? UIColor.systemGreen : UIColor.systemRed
-            self.authorizeHealthKitLabel.text = authorized ? "Refresh Health Data" : "Authorize HealthKit"
+            // self.authorizeHealthKitLabel.text = authorized ? "Refresh Health Data" : "Authorize HealthKit"
         }
         
         if let result = UserDefaults.standard.string(forKey: UserDefaultsKey.trainingResult.rawValue) {
@@ -320,10 +315,11 @@ class HealthDataTableViewController: UITableViewController {
         }
     }
     
-    // MARK: PyGrid
+    // MARK: Training
     
     // Function to prepare and send data to Artificien for training instead of using PyGrid
     func trainModelWithArtificien() {
+                
         guard let age = UserDefaults.standard.object(forKey: "age") as? Int,
               let bodyMassIndex = UserDefaults.standard.object(forKey: "bodyMassIndex") as? Double,
               let sex = UserDefaults.standard.object(forKey: "biologicalSex") as? String,
@@ -336,118 +332,19 @@ class HealthDataTableViewController: UITableViewController {
             return
         }
         
-        let trainDict = [
-            "age": age,
-            "bodyMassIndex": bodyMassIndex,
-            "sex": sex
-        ]
-        let valDict = [
-            "stepCount": stepCount
+        let sexAsInt = sex == "Male" ? 1 : 0
+        
+        let appData: [String: Float] = [
+            "age": Float(age),
+            "bodyMassIndex": Float(bodyMassIndex),
+            "sex": Float(sexAsInt),
+            "stepCount": Float(stepCount)
         ]
             
-        artificien.train(trainingData: trainDict, validationData: valDict)
-    }
-    
-    // All code to connect to PyGrid node, prepare data, train, and update model in node
-    func trainModel() {
-        // This is a demonstration of how to use SwiftSyft with PyGrid to train a plan on local data on an iOS device
-        // Get token from here on the "Model-Centric Test" notebook: https://github.com/dartmouth-cs98/artificien_experimental/blob/main/deploymentExamples/model_centric_test.ipynb
-        let authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.e30.Cn_0cSjCw1QKtcYDx_mYN_q9jO2KkpcUoiVbILmKVB4LUCQvZ7YeuyQ51r9h3562KQoSas_ehbjpz2dw1Dk24hQEoN6ObGxfJDOlemF5flvLO_sqAHJDGGE24JRE4lIAXRK6aGyy4f4kmlICL6wG8sGSpSrkZlrFLOVRJckTptgaiOTIm5Udfmi45NljPBQKVpqXFSmmb3dRy_e8g3l5eBVFLgrBhKPQ1VbNfRK712KlQWs7jJ31fGpW2NxMloO1qcd6rux48quivzQBCvyK8PV5Sqrfw_OMOoNLcSvzePDcZXa2nPHSu3qQIikUdZIeCnkJX-w0t8uEFG3DfH1fVA"
-        let pyGridNodeAddress = "http://pygri-pygri-frtwp3inl2zq-2ea21a767266378c.elb.us-east-1.amazonaws.com:5000/"
-        
-        // Create a client with a PyGrid server URL
-        guard let syftClient = SyftClient(url: URL(string: pyGridNodeAddress)!, authToken: authToken) else {
-            
-            self.displayAlert(for: nil,
-                              title: "Node connection error",
-                              message: "Unable to connect to PyGrid node address")
-            return
-        }
-        
-        // Store the client as a property so it doesn't get deallocated during training.
-        self.syftClient = syftClient
-        
-        // Show loading UI
         showSpinner()
-        
-        // Create a new federated learning job with the model name and version
-        self.syftJob = syftClient.newJob(modelName: "perceptron", version: "0.3.0")
-        
-        // This function is called when SwiftSyft has downloaded the plans and model parameters from PyGrid
-        // You are ready to train your model on your data
-        // plan - Use this to generate diffs using our training data
-        // clientConfig - contains the configuration for the training cycle (batchSize, learning rate) and metadata for the model (name, version)
-        // modelReport - Used as a completion block and reports the diffs to PyGrid.
-        self.syftJob?.onReady(execute: { plan, clientConfig, modelReport in
-            
-            guard let age = UserDefaults.standard.object(forKey: "age") as? Int,
-                  let bodyMassIndex = UserDefaults.standard.object(forKey: "bodyMassIndex") as? Double,
-                  let sex = UserDefaults.standard.object(forKey: "biologicalSex") as? String,
-                  let stepCount = UserDefaults.standard.object(forKey: "stepCount") as? Int else {
-                
-                self.displayAlert(for: nil,
-                                  title: "Pre-processing error",
-                                  message: "Unable to access user data")
-                
-                return
-            }
-            
-            let sexAsInt = sex == "Male" ? 1 : 0
-            let healthTrainData: [Float] = [Float(age), Float(sexAsInt), Float(bodyMassIndex)]
-            let healthValData: [Float] = [Float(stepCount)]
-            
-            do {
-                // Since we don't have native tensor wrappers in Swift yet, we use `TrainingData` and `ValidationData` classes to store the data and shape.
-                let healthTrainingData = try TrainingData(data: healthTrainData, shape: [clientConfig.batchSize, healthTrainData.count / clientConfig.batchSize])
-                let healthValidationData = try ValidationData(data: healthValData, shape: [clientConfig.batchSize, healthValData.count / clientConfig.batchSize])
-                
-                // Execute the plan with the training data and validation data. `plan.execute()` returns the loss and you can use it if you want to (plan.execute() has the @discardableResult attribute)
-                let loss = plan.execute(trainingData: healthTrainingData, validationData: healthValidationData, clientConfig: clientConfig)
-                UserDefaults.standard.set("\(loss)", forKey: "trainingResult")
-                
-                // Generate diff data and report the final diffs as
-                let diffStateData = try plan.generateDiffData()
-                modelReport(diffStateData)
-                
-                self.displayAlert(for: nil,
-                                  title: "Training Complete",
-                                  message: "Training successful with a loss of \(loss)")
-                DispatchQueue.main.sync { self.updateLabels() }
-                
-            } catch let error {
-                
-                // Handle any error from the training cycle
-                debugPrint(error.localizedDescription)
-                
-                self.displayAlert(for: error,
-                                  title: "Error during training cycle",
-                                  message: nil)
-                
-            }
-            
-        })
-        
-        // This is the error handler for any job exeuction errors like connecting to PyGrid
-        self.syftJob?.onError(execute: { error in
-            
-            self.displayAlert(for: error,
-                              title: "Job execution error",
-                              message: nil)
-            return
-        })
-        
-        // This is the error handler for being rejected in a cycle. You can retry again
-        // after the suggested timeout.
-        self.syftJob?.onRejected(execute: { timeout in
-            if let timeout = timeout {
-                // Retry again after timeout
-                print(timeout)
-            }
-        })
-        
-        // Start the job. You can set that the job should only execute if the device is being charge and there is a WiFi connection.
-        // These options are true by default if you don't specify them.
-        self.syftJob?.start(chargeDetection: false, wifiDetection: false)
+        self.artificien.train(data: appData)
+        updateLabels()
+        hideSpinner()
     }
 
     
@@ -476,13 +373,37 @@ class HealthDataTableViewController: UITableViewController {
                                  message: "Please authorize access to your health data to enable the model to train on it.")
                 }
             }
+            if indexPath.row == 2 {
+                if healthKitIsAuthorized { updateHealthInfo() }
+                else {
+                    displayAlert(for: nil,
+                                 title: "Hold up!",
+                                 message: "Please authorize access to your health data to enable the model to train on it.")
+                }
+            }
         }
         
         // HealthKit actions
         if indexPath.section == 1 {
             if indexPath.row == 1 {
-                // Authorize HealthKit if unauthorized; else update health data
-                healthKitIsAuthorized ? updateHealthInfo() : authorizeHealthKit()
+                // Authorize HealthKit
+                
+                if healthKitIsAuthorized { return }
+                else {
+                    authorizeHealthKit()
+                }
+            }
+        }
+        
+        // Health data display
+        if indexPath.section == 2 {
+            if indexPath.row == 0 {
+                if healthKitIsAuthorized { updateHealthInfo() }
+                else {
+                    displayAlert(for: nil,
+                                 title: "Hold up!",
+                                 message: "Please authorize access to your health data to enable the model to train on it.")
+                }
             }
         }
     }
