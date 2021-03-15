@@ -2,16 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>We will never use your camera without your consent.</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>edu.dartmouth.Artificien-Mobile</string>
+		<string>com.artificien.background</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
@@ -31,6 +24,13 @@
 	<string>17</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>We will never use your camera without your consent.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>We will use your health information for scientific research. Your data will never leave this device.</string>
 	<key>NSHealthUpdateUsageDescription</key>

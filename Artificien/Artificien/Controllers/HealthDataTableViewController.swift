@@ -317,19 +317,13 @@ class HealthDataTableViewController: UITableViewController {
     
     // MARK: Training
     
-    // Function to prepare and send data to Artificien for training instead of using PyGrid
-    func trainModelWithArtificien() {
-                
+    public static func prepareAppData() -> [String: Float]? {
         guard let age = UserDefaults.standard.object(forKey: "age") as? Int,
               let bodyMassIndex = UserDefaults.standard.object(forKey: "bodyMassIndex") as? Double,
               let sex = UserDefaults.standard.object(forKey: "biologicalSex") as? String,
               let stepCount = UserDefaults.standard.object(forKey: "stepCount") as? Int else {
             
-            self.displayAlert(for: nil,
-                              title: "Pre-processing error",
-                              message: "Unable to access user data")
-            
-            return
+            return nil
         }
         
         let sexAsInt = sex == "Male" ? 1 : 0
@@ -340,13 +334,19 @@ class HealthDataTableViewController: UITableViewController {
             "sex": Float(sexAsInt),
             "stepCount": Float(stepCount)
         ]
+        
+        return appData
+    }
+    
+    // Function to prepare and send data to Artificien for training synchronously (as an example)
+    func trainModelWithArtificien() {
             
         showSpinner()
+        guard let appData = HealthDataTableViewController.prepareAppData() else { return }
         self.artificien.train(data: appData)
         updateLabels()
         hideSpinner()
     }
-
     
     // MARK: UITableView Delegate
     
