@@ -418,7 +418,7 @@
 				CODE_SIGN_ENTITLEMENTS = Artificien/Artificien.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = JQ28K6Y7JE;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Artificien/Info.plist;
@@ -428,7 +428,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.dartmouth.Artificien-Mobile";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore edu.dartmouth.Artificien-Mobile 1606681129";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore edu.dartmouth.Artificien-Mobile 1615845621";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -443,7 +443,7 @@
 				CODE_SIGN_ENTITLEMENTS = Artificien/Artificien.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = JQ28K6Y7JE;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Artificien/Info.plist;
@@ -453,7 +453,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.dartmouth.Artificien-Mobile";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore edu.dartmouth.Artificien-Mobile 1606681129";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore edu.dartmouth.Artificien-Mobile 1615845621";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
