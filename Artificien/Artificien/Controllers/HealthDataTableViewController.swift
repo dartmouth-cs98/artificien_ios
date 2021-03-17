@@ -329,10 +329,10 @@ class HealthDataTableViewController: UITableViewController {
         let sexAsInt = sex == "Male" ? 1 : 0
         
         let appData: [String: Float] = [
-            "age": Float(age),
-            "bodyMassIndex": Float(bodyMassIndex),
-            "sex": Float(sexAsInt),
-            "stepCount": Float(stepCount)
+            "Age": Float(age),
+            "Body Mass Index": Float(bodyMassIndex),
+            "Sex": Float(sexAsInt),
+            "Weekly Step Count": Float(stepCount)
         ]
         
         return appData
