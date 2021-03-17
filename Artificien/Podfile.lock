@@ -40,7 +40,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Artificien:
-    :commit: 72f35e7fdbbb52443421d85aea0439ff7db69825
+    :commit: 4cbc8fb7ad32230ef0286f8d92d39431a71c2eee
     :git: https://github.com/dartmouth-cs98/artificien_ios_library.git
 
 SPEC CHECKSUMS:
